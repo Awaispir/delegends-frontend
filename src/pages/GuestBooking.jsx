@@ -764,7 +764,7 @@ const PayAtVenueStep = ({
 
       // Clear cart and navigate to success
       clearAllBookingData();
-      navigate('/booking-success', {
+      navigate('/order-success', {
         state: {
           booking: response.data.booking,
           paymentType: 'pay_at_venue',
