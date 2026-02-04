@@ -49,7 +49,7 @@ const Header = () => {
           <div className="hidden lg:flex items-center gap-6 ml-auto">
             <Link to="/services" className="hover:text-yellow-400 transition font-medium text-base">{t('nav.services')}</Link>
             <Link to="/products" className="hover:text-yellow-400 transition font-medium text-base">{t('nav.products')}</Link>
-            <Link to="/gift-cards" className="hover:text-yellow-400 transition font-medium text-base">Gift Cards</Link>
+            <Link to="/gift-cards" className="hover:text-yellow-400 transition font-medium text-base">{t('nav.giftCards')}</Link>
             <Link to="/about" className="hover:text-yellow-400 transition font-medium text-base">{t('nav.about')}</Link>
             <Link to="/our-team" className="hover:text-yellow-400 transition font-medium text-base">{t('nav.ourTeam')}</Link>
           
@@ -197,7 +197,7 @@ const Header = () => {
                 className="block py-2 hover:text-yellow-400 transition"
                 onClick={() => setShowMobileMenu(false)}
               >
-                Gift Cards
+                {t('nav.giftCards')}
               </Link>
 
               <Link 
