@@ -1,0 +1,267 @@
+{
+  "en": {
+    "faq": {
+      "title": "Frequently Asked Questions",
+      "subtitle": "Find answers to common questions about our services",
+      "stillHaveQuestions": "Still Have Questions?",
+      "contactMessage": "Can't find what you're looking for? Get in touch with our team",
+      "callUs": "Call Us",
+      "emailUs": "Email Us",
+      "questions": [
+        {
+          "question": "What services do you offer?",
+          "answer": "We offer a comprehensive range of barbering and grooming services including haircuts, beard grooming, classic shaves, facials, massages, and specialized packages like Groomsmaid, Groom Classic, and Groom Plus."
+        },
+        {
+          "question": "How do I book an appointment?",
+          "answer": "You can book an appointment through our website by clicking the 'Book Now' button, or by calling us directly at +370 663 75 648. We recommend booking in advance to secure your preferred time slot."
+        },
+        {
+          "question": "What is your cancellation policy?",
+          "answer": "We require at least 24 hours notice for cancellations. Cancellations made with sufficient notice will receive a full refund of any deposit. Late cancellations or no-shows may forfeit the deposit."
+        },
+        {
+          "question": "Do you accept walk-ins?",
+          "answer": "While we accept walk-ins based on availability, we highly recommend booking an appointment to guarantee service at your preferred time."
+        },
+        {
+          "question": "What payment methods do you accept?",
+          "answer": "We accept cash, credit cards, and debit cards. Payment is due at the time of service."
+        },
+        {
+          "question": "How long does a typical haircut take?",
+          "answer": "A standard haircut typically takes 30-45 minutes. However, more complex styles or additional services may require more time."
+        },
+        {
+          "question": "Do you sell grooming products?",
+          "answer": "Yes! We offer a selection of premium grooming products including hair care, beard care, and styling products. You can browse our products section on the website or ask your barber for recommendations."
+        },
+        {
+          "question": "Are your products suitable for sensitive skin?",
+          "answer": "We use high-quality professional products. If you have sensitive skin or allergies, please inform your barber before service so we can select appropriate products for you."
+        },
+        {
+          "question": "Can I choose my barber?",
+          "answer": "Absolutely! When booking online, you can select your preferred barber from our team of professionals."
+        },
+        {
+          "question": "What should I bring to my appointment?",
+          "answer": "Just bring yourself! If you have specific style preferences, feel free to bring reference photos. We provide all necessary tools and products."
+        }
+      ]
+    },
+    "legal": {
+      "privacy": {
+        "title": "Privacy Policy",
+        "subtitle": "From DeLegends Barber Shop. How we protect your information.",
+        "lastUpdated": "December 15, 2024",
+        "sections": [
+          {
+            "heading": "Privacy Policy",
+            "content": "At DeLegends Barber Shop, we are committed to protecting your privacy and ensuring the security of your personal information. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or use our services."
+          },
+          {
+            "heading": "Information We Collect",
+            "content": "We collect information that you provide directly to us, including but not limited to your name, email address, phone number, and appointment preferences. We may also collect information about your device, browsing actions, and patterns when you interact with our website."
+          },
+          {
+            "heading": "How We Use Your Information",
+            "content": "We use the information we collect to provide, maintain, and improve our services, process your bookings, send you appointment reminders, respond to your inquiries, and communicate with you about our services, promotions, and updates. We may also use your information for analytical purposes to understand how our services are used and to develop new features."
+          },
+          {
+            "heading": "Information Sharing and Disclosure",
+            "content": "We do not sell, trade, or rent your personal information to third parties. We may share your information with service providers who assist us in operating our website and conducting our business, subject to confidentiality agreements. We may also disclose your information when required by law or to protect our rights and safety."
+          },
+          {
+            "heading": "Data Security",
+            "content": "We implement appropriate technical and organizational measures to protect your personal information against unauthorized access, alteration, disclosure, or destruction. However, no method of transmission over the Internet or electronic storage is 100% secure, and we cannot guarantee absolute security."
+          },
+          {
+            "heading": "Your Rights",
+            "content": "You have the right to access, correct, or delete your personal information. You may also object to or restrict certain processing of your data. To exercise these rights, please contact us using the information provided below."
+          },
+          {
+            "heading": "Cookies and Tracking Technologies",
+            "content": "We use cookies and similar tracking technologies to enhance your experience on our website. You can control cookie settings through your browser preferences. For more information, please refer to our Cookie Policy."
+          },
+          {
+            "heading": "Changes to This Policy",
+            "content": "We may update this Privacy Policy from time to time. We will notify you of any changes by posting the new Privacy Policy on this page and updating the 'Last Updated' date."
+          },
+          {
+            "heading": "Contact Us",
+            "content": "If you have any questions or concerns about this Privacy Policy, please contact us at contact@delegendsbarbershop.lt or call us at +370 663 75 648."
+          }
+        ]
+      },
+      "terms": {
+        "title": "Terms & Conditions",
+        "subtitle": "Please read these terms carefully before using our services.",
+        "lastUpdated": "December 15, 2024",
+        "sections": [
+          {
+            "heading": "Terms and Conditions",
+            "content": "Welcome to DeLegends Barber Shop. These Terms and Conditions govern your use of our website and services. By accessing or using our services, you agree to be bound by these terms."
+          },
+          {
+            "heading": "Services",
+            "content": "DeLegends Barber Shop provides professional barbering and grooming services. We reserve the right to refuse service to anyone for any reason at any time. All appointments are subject to availability and confirmation."
+          },
+          {
+            "heading": "Booking and Cancellation",
+            "content": "Appointments can be booked through our website or by phone. We require at least 24 hours notice for cancellations. Late cancellations or no-shows may be subject to a cancellation fee. We reserve the right to cancel or reschedule appointments due to unforeseen circumstances."
+          },
+          {
+            "heading": "Payment Terms",
+            "content": "Payment is due at the time of service. We accept cash, credit cards, and debit cards. Prices are subject to change without notice. Any promotional offers are subject to specific terms and conditions."
+          },
+          {
+            "heading": "User Conduct",
+            "content": "You agree to use our services in a lawful manner and respect our staff and other clients. We reserve the right to terminate services to any client who engages in inappropriate behavior."
+          },
+          {
+            "heading": "Intellectual Property",
+            "content": "All content on our website, including text, graphics, logos, and images, is the property of DeLegends Barber Shop and protected by copyright laws. You may not reproduce, distribute, or create derivative works without our express written permission."
+          },
+          {
+            "heading": "Limitation of Liability",
+            "content": "DeLegends Barber Shop shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of our services. Our total liability shall not exceed the amount paid for the service in question."
+          },
+          {
+            "heading": "Governing Law",
+            "content": "These Terms and Conditions are governed by and construed in accordance with the laws of Lithuania, without regard to conflict of law principles."
+          },
+          {
+            "heading": "Changes to Terms",
+            "content": "We reserve the right to modify these terms at any time. Continued use of our services following any changes constitutes acceptance of the new terms."
+          }
+        ]
+      },
+      "refund": {
+        "title": "Refund Policy",
+        "subtitle": "Understanding our refund and cancellation policies.",
+        "lastUpdated": "December 15, 2024",
+        "sections": [
+          {
+            "heading": "Refund Policy",
+            "content": "At DeLegends Barber Shop, we strive to ensure complete satisfaction with our services. This Refund Policy outlines the circumstances under which refunds may be issued."
+          },
+          {
+            "heading": "Service Satisfaction",
+            "content": "If you are not satisfied with your service, please inform us immediately. We will make every effort to address your concerns and, if necessary, provide a complimentary adjustment or alternative service."
+          },
+          {
+            "heading": "Cancellation Policy",
+            "content": "Appointments cancelled with at least 24 hours notice will receive a full refund of any deposit paid. Cancellations made less than 24 hours before the scheduled appointment may forfeit the deposit. No-shows will result in forfeiture of the full deposit amount."
+          },
+          {
+            "heading": "Product Purchases",
+            "content": "Products purchased from DeLegends Barber Shop may be returned within 14 days of purchase for a full refund, provided they are unopened and in original condition. Opened or used products cannot be returned due to health and safety regulations."
+          },
+          {
+            "heading": "Refund Processing",
+            "content": "Approved refunds will be processed within 5-10 business days and credited to the original method of payment. Please note that it may take additional time for your financial institution to post the refund to your account."
+          },
+          {
+            "heading": "Gift Cards and Vouchers",
+            "content": "Gift cards and promotional vouchers are non-refundable and cannot be exchanged for cash. They must be used within the validity period stated on the card or voucher."
+          },
+          {
+            "heading": "Exceptions",
+            "content": "Refunds will not be issued for services already rendered unless there is a significant quality issue that we are unable to rectify. The determination of whether a refund is warranted is at the sole discretion of DeLegends Barber Shop management."
+          },
+          {
+            "heading": "Contact for Refunds",
+            "content": "To request a refund or discuss any concerns regarding our services, please contact us at contact@delegendsbarbershop.lt or call +370 663 75 648. We are committed to resolving any issues promptly and fairly."
+          }
+        ]
+      },
+      "cookies": {
+        "title": "Cookies Policy",
+        "subtitle": "How we use cookies and similar technologies.",
+        "lastUpdated": "December 15, 2024",
+        "sections": [
+          {
+            "heading": "Cookie Policy",
+            "content": "This Cookie Policy explains how DeLegends Barber Shop uses cookies and similar technologies to recognize you when you visit our website. It explains what these technologies are and why we use them, as well as your rights to control our use of them."
+          },
+          {
+            "heading": "What Are Cookies",
+            "content": "Cookies are small data files that are placed on your computer or mobile device when you visit a website. Cookies are widely used by website owners to make their websites work, or to work more efficiently, as well as to provide reporting information."
+          },
+          {
+            "heading": "Types of Cookies We Use",
+            "content": "We use both session cookies (which expire when you close your browser) and persistent cookies (which stay on your device until deleted or expired). We use essential cookies for website functionality, analytical cookies to understand usage, and preference cookies to remember your settings."
+          },
+          {
+            "heading": "Essential Cookies",
+            "content": "These cookies are necessary for the website to function properly. They enable basic functions like page navigation, secure access to certain areas, and booking appointments. The website cannot function properly without these cookies."
+          },
+          {
+            "heading": "Analytics Cookies",
+            "content": "We use analytics cookies to understand how visitors interact with our website. This helps us improve our website functionality and user experience. These cookies collect information anonymously and report website trends."
+          },
+          {
+            "heading": "Marketing Cookies",
+            "content": "Marketing cookies are used to track visitors across websites. The intention is to display ads that are relevant and engaging for individual users. These cookies may be set by third-party advertising networks."
+          },
+          {
+            "heading": "Managing Cookies",
+            "content": "Most web browsers allow you to control cookies through their settings preferences. However, limiting cookies may impact your experience of our website and limit the functionality we can provide."
+          },
+          {
+            "heading": "Third-Party Cookies",
+            "content": "Some cookies on our website are placed by third-party services. We do not control these cookies and recommend you check the third-party websites for more information about their cookie policies."
+          },
+          {
+            "heading": "Updates to This Policy",
+            "content": "We may update this Cookie Policy from time to time. Any changes will be posted on this page with an updated revision date."
+          }
+        ]
+      },
+      "disclaimer": {
+        "title": "Disclaimer",
+        "subtitle": "Important information about using our services.",
+        "lastUpdated": "December 15, 2024",
+        "sections": [
+          {
+            "heading": "Website Disclaimer",
+            "content": "The information provided by DeLegends Barber Shop on our website is for general informational purposes only. All information is provided in good faith, however we make no representation or warranty of any kind regarding the accuracy, adequacy, validity, reliability, or completeness of any information on the site."
+          },
+          {
+            "heading": "Professional Advice",
+            "content": "The content on our website is not intended to be a substitute for professional medical, dermatological, or hair care advice. Always seek the advice of qualified professionals with any questions you may have regarding hair care, scalp conditions, or skin sensitivities."
+          },
+          {
+            "heading": "Service Results",
+            "content": "Individual results from our services may vary. Images and testimonials shown on our website are for illustrative purposes and do not guarantee specific results. Actual outcomes depend on various factors including hair type, condition, and individual characteristics."
+          },
+          {
+            "heading": "External Links",
+            "content": "Our website may contain links to external websites that are not provided or maintained by DeLegends Barber Shop. We do not guarantee the accuracy, relevance, timeliness, or completeness of information on these external sites."
+          },
+          {
+            "heading": "Product Information",
+            "content": "While we strive to provide accurate product information, manufacturers may change product formulations. We recommend checking product labels for current information before use, especially if you have sensitivities or allergies."
+          },
+          {
+            "heading": "Limitation of Liability",
+            "content": "Under no circumstance shall DeLegends Barber Shop have any liability to you for any loss or damage of any kind incurred as a result of the use of our website or reliance on any information provided. Your use of the website and reliance on any information is solely at your own risk."
+          },
+          {
+            "heading": "Allergies and Sensitivities",
+            "content": "Please inform your barber of any known allergies or skin sensitivities before receiving services. While we use high-quality professional products, we cannot guarantee that you will not have a reaction to any product used during your service."
+          },
+          {
+            "heading": "Pricing and Availability",
+            "content": "Prices and service availability shown on our website are subject to change without notice. We make every effort to ensure pricing accuracy, but errors may occur. In the event of a pricing error, we reserve the right to correct it."
+          },
+          {
+            "heading": "Contact Information",
+            "content": "If you have any questions or concerns about this disclaimer, please contact us at contact@delegendsbarbershop.lt or call +370 663 75 648."
+          }
+        ]
+      }
+    }
+  }
+}
