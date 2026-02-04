@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams, useLocation } from 'react-router-dom';
 import { useCart } from '../context/CartContext';
 import { CheckCircle } from 'lucide-react';
 import axios from 'axios';
@@ -8,12 +8,22 @@ const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
 const OrderSuccess = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [searchParams] = useSearchParams();
   const { clearCart } = useCart();
   const [order, setOrder] = useState(null);
+  const [booking, setBooking] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Check if this is a booking success (from Pay at Venue)
+    if (location.state?.booking) {
+      setBooking(location.state.booking);
+      setLoading(false);
+      return;
+    }
+
+    // Otherwise, handle product order success
     const sessionId = searchParams.get('session_id');
 
     if (!sessionId) {
@@ -35,7 +45,7 @@ const OrderSuccess = () => {
     };
 
     fetchOrderDetails();
-  }, [searchParams, navigate, clearCart]);
+  }, [searchParams, navigate, clearCart, location.state]);
 
   if (loading) {
     return (
@@ -54,11 +64,74 @@ const OrderSuccess = () => {
         <div className="bg-white rounded-lg shadow-lg p-8 text-center">
           <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
           
-          <h1 className="text-4xl font-bold text-gray-800 mb-4">Order Successful!</h1>
+          <h1 className="text-4xl font-bold text-gray-800 mb-4">
+            {booking ? 'Booking Confirmed!' : 'Order Successful!'}
+          </h1>
           <p className="text-xl text-gray-600 mb-8">
-            Thank you for your purchase. Your order has been confirmed.
+            {booking 
+              ? 'Thank you! Your booking has been confirmed.' 
+              : 'Thank you for your purchase. Your order has been confirmed.'}
           </p>
 
+          {/* Booking Success Details */}
+          {booking && (
+            <>
+              <div className="bg-gray-50 rounded-lg p-6 mb-8">
+                <div className="grid grid-cols-2 gap-4 text-left">
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Customer Name</p>
+                    <p className="text-lg font-bold text-gray-900">{booking.customerInfo?.name}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Date & Time</p>
+                    <p className="text-lg font-bold text-gray-900">{booking.date} at {booking.time}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Location</p>
+                    <p className="text-lg font-medium text-gray-900">{booking.location}</p>
+                  </div>
+                  <div>
+                    <p className="text-sm text-gray-600 mb-1">Total Amount</p>
+                    <p className="text-lg font-bold text-green-600">€{booking.totalPrice?.toFixed(2)}</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t pt-6 mb-8">
+                <h2 className="text-2xl font-bold text-gray-800 mb-4">Services</h2>
+                <div className="space-y-3">
+                  {booking.services?.map((service, index) => (
+                    <div key={index} className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                      <div className="text-left">
+                        <h3 className="font-semibold text-gray-800">{service.serviceName}</h3>
+                        <p className="text-sm text-gray-600">{service.duration} minutes</p>
+                      </div>
+                      <p className="font-bold text-gray-900">€{service.price?.toFixed(2)}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {location.state?.paymentType === 'pay_at_venue' && (
+                <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-8">
+                  <p className="text-sm text-gray-700 font-semibold">
+                    💳 Payment Method: Pay at Venue
+                  </p>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Please bring cash or card to pay at the salon.
+                  </p>
+                </div>
+              )}
+
+              <div className="bg-green-50 border border-green-200 rounded-lg p-4 mb-8">
+                <p className="text-sm text-gray-700">
+                  A confirmation email has been sent to <strong>{booking.customerInfo?.email}</strong>
+                </p>
+              </div>
+            </>
+          )}
+
+          {/* Product Order Success Details */}
           {order && (
             <>
               <div className="bg-gray-50 rounded-lg p-6 mb-8">
