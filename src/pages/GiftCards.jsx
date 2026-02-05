@@ -29,6 +29,7 @@ const GiftCards = () => {
 			nameKey: 'giftCards.thankYou',
 			amount: 25,
 			descKey: 'giftCards.thankYouDesc',
+			image: '/images/giftcards/thankyou.jpeg',
 			gradient: 'linear-gradient(135deg, #8B0000 0%, #4a0000 100%)',
 			type: 'virtual',
 			popular: false
@@ -38,6 +39,7 @@ const GiftCards = () => {
 			nameKey: 'giftCards.birthday',
 			amount: 50,
 			descKey: 'giftCards.birthdayDesc',
+			image: '/images/giftcards/birthday.jpeg',
 			gradient: 'linear-gradient(135deg, #8B0000 0%, #660000 100%)',
 			type: 'physical',
 			popular: true
@@ -47,6 +49,7 @@ const GiftCards = () => {
 			nameKey: 'giftCards.christmas',
 			amount: 75,
 			descKey: 'giftCards.christmasDesc',
+			image: '/images/giftcards/christmas.jpeg',
 			gradient: 'linear-gradient(135deg, #0a3d0a 0%, #041e04 100%)',
 			type: 'virtual',
 			popular: false
@@ -56,6 +59,7 @@ const GiftCards = () => {
 			nameKey: 'giftCards.valentines',
 			amount: 100,
 			descKey: 'giftCards.valentinesDesc',
+			image: '/images/giftcards/valentines.jpeg',
 			gradient: 'linear-gradient(135deg, #4b0033 0%, #2d001e 100%)',
 			type: 'physical',
 			popular: true
@@ -65,6 +69,7 @@ const GiftCards = () => {
 			nameKey: 'giftCards.anniversary',
 			amount: 150,
 			descKey: 'giftCards.anniversaryDesc',
+			image: '/images/giftcards/anniversary.jpeg',
 			gradient: 'linear-gradient(135deg, #1a334d 0%, #0a1a29 100%)',
 			type: 'virtual',
 			popular: false
@@ -74,6 +79,7 @@ const GiftCards = () => {
 			nameKey: 'giftCards.corporate',
 			amount: 200,
 			descKey: 'giftCards.corporateDesc',
+			image: '/images/giftcards/corporate.jpeg',
 			gradient: 'linear-gradient(135deg, #3d2b1f 0%, #251910 100%)',
 			type: 'physical',
 			popular: false
@@ -225,6 +231,11 @@ const GiftCards = () => {
 								className="h-48 relative overflow-hidden"
 								style={{ background: card.gradient }}
 							>
+								<img 
+									src={card.image} 
+									alt={t(card.nameKey)}
+									className="absolute inset-0 w-full h-full object-cover opacity-80"
+								/>
 								<div className="absolute inset-0 bg-linear-to-b from-transparent to-black/70"></div>
 								<div className="absolute bottom-4 left-4 right-4 z-10">
 									<div className="flex items-center gap-2 mb-2">
