@@ -185,15 +185,15 @@ Note: Backend integration pending.`);
 	};
 
 	return (
-		<div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
+		<div className="min-h-screen bg-linear-to-b from-gray-900 via-black to-gray-900">
 			{/* Hero Section */}
 			<section className="relative py-20 overflow-hidden">
-				<div className="absolute inset-0 bg-gradient-to-r from-[#d4af37]/10 to-transparent"></div>
+				<div className="absolute inset-0 bg-linear-to-r from-[#d4af37]/10 to-transparent"></div>
 				<div className="container mx-auto px-4 text-center relative z-10">
-					<div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-[#d4af37] to-[#f4d03f] rounded-full mb-6 shadow-lg">
+					<div className="inline-flex items-center justify-center w-20 h-20 bg-linear-to-r from-[#d4af37] to-[#f4d03f] rounded-full mb-6 shadow-lg">
 						<Gift className="w-10 h-10 text-black" />
 					</div>
-					<h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+					<h1 className="text-6xl font-bold mb-4 bg-linear-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
 						{t('giftCards.title')}
 					</h1>
 					<p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
@@ -222,7 +222,7 @@ Note: Backend integration pending.`);
 
 							{/* Popular Badge */}
 							{card.popular && (
-								<div className="absolute top-4 left-4 z-10 px-3 py-1 bg-gradient-to-r from-[#ffd700] to-[#b8860b] text-black rounded-full text-xs font-bold">
+								<div className="absolute top-4 left-4 z-10 px-3 py-1 bg-linear-to-r from-[#ffd700] to-[#b8860b] text-black rounded-full text-xs font-bold">
 									{t('giftCards.popular')}
 								</div>
 							)}
@@ -232,7 +232,7 @@ Note: Backend integration pending.`);
 								className="h-48 relative overflow-hidden"
 								style={{ background: card.gradient }}
 							>
-								<div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
+								<div className="absolute inset-0 bg-linear-to-b from-transparent to-black/70"></div>
 								<div className="absolute bottom-4 left-4 right-4 z-10">
 									<div className="flex items-center gap-2 mb-2">
 										<Gift className="w-5 h-5 text-[#d4af37]" />
@@ -243,7 +243,7 @@ Note: Backend integration pending.`);
 
 							{/* Card Content */}
 							<div className="p-6">
-								<h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+								<h3 className="text-2xl font-bold mb-2 bg-linear-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
 									{t(card.nameKey)}
 								</h3>
 								<p className="text-gray-400 text-sm mb-4 min-h-[60px]">
@@ -258,7 +258,7 @@ Note: Backend integration pending.`);
 							</div>
 
 							{/* Decorative Border */}
-							<div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#b8860b] via-[#ffd700] to-[#b8860b]"></div>
+							<div className="absolute top-0 left-0 right-0 h-1 bg-linear-to-r from-[#b8860b] via-[#ffd700] to-[#b8860b]"></div>
 						</div>
 					))}
 				</div>
@@ -266,8 +266,8 @@ Note: Backend integration pending.`);
 
 			{/* Redeem Section */}
 			<section className="container mx-auto px-4 py-16">
-				<div className="max-w-4xl mx-auto bg-gradient-to-br from-gray-900 to-black border-2 border-[#d4af37] rounded-3xl p-8 md:p-12 shadow-2xl">
-					<h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+				<div className="max-w-4xl mx-auto bg-linear-to-br from-gray-900 to-black border-2 border-[#d4af37] rounded-3xl p-8 md:p-12 shadow-2xl">
+					<h2 className="text-4xl font-bold text-center mb-4 bg-linear-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
 						Redeem Your Gift Card
 					</h2>
 					<p className="text-center text-gray-400 mb-8">
@@ -275,7 +275,7 @@ Note: Backend integration pending.`);
 					</p>
 
 					<div className="grid md:grid-cols-2 gap-6">
-						<div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-2xl p-8 border border-[#d4af37]/30 flex flex-col items-center justify-center">
+						<div className="bg-linear-to-br from-gray-800/50 to-gray-900/50 rounded-2xl p-8 border border-[#d4af37]/30 flex flex-col items-center justify-center">
 							<Gift className="w-16 h-16 text-[#d4af37] mb-4" />
 							<h3 className="text-xl font-bold text-white mb-2">Birthday Gift Card</h3>
 							<p className="text-gray-400 text-center text-sm">
@@ -286,7 +286,7 @@ Note: Backend integration pending.`);
 						<div className="space-y-4">
 							<button
 								onClick={() => setShowRedeemModal(true)}
-								className="w-full bg-gradient-to-r from-[#d4af37] to-[#f4d03f] text-black py-4 rounded-full font-bold text-lg uppercase tracking-wider hover:shadow-lg hover:shadow-[#d4af37]/50 transition-all duration-300"
+								className="w-full bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-black py-4 rounded-full font-bold text-lg uppercase tracking-wider hover:shadow-lg hover:shadow-[#d4af37]/50 transition-all duration-300"
 							>
 								Redeem Now
 							</button>
@@ -301,7 +301,7 @@ Note: Backend integration pending.`);
 			{/* How It Works Section */}
 			<section className="container mx-auto px-4 py-16">
 				<div className="text-center mb-12">
-					<h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+					<h2 className="text-4xl font-bold mb-4 bg-linear-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
 						How Gift Cards Work
 					</h2>
 					<p className="text-gray-400 max-w-3xl mx-auto">
@@ -328,7 +328,7 @@ Note: Backend integration pending.`);
 						}
 					].map((item) => (
 						<div key={item.step} className="bg-gray-800/30 border border-[#d4af37]/30 rounded-2xl p-8 text-center hover:border-[#d4af37] transition-all duration-300">
-							<div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#d4af37] to-[#f4d03f] rounded-full mb-4">
+							<div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-r from-[#d4af37] to-[#f4d03f] rounded-full mb-4">
 								<span className="text-black font-bold text-2xl">{item.step}</span>
 							</div>
 							<h3 className="font-bold text-xl text-white mb-3">{item.title}</h3>
@@ -339,7 +339,7 @@ Note: Backend integration pending.`);
 			</section>
 
 			{/* Bottom CTA */}
-			<section className="bg-gradient-to-r from-gray-900 to-black border-t border-[#d4af37]/30 py-16">
+			<section className="bg-linear-to-r from-gray-900 to-black border-t border-[#d4af37]/30 py-16">
 				<div className="container mx-auto px-4 text-center">
 					<h2 className="text-4xl font-bold mb-4 text-white">Ready to Gift Excellence?</h2>
 					<p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
@@ -348,7 +348,7 @@ Note: Backend integration pending.`);
 					<div className="flex flex-wrap justify-center gap-4">
 						<button 
 							onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-							className="bg-gradient-to-r from-[#d4af37] to-[#f4d03f] text-black px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-[#d4af37]/50 transition-all"
+							className="bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-black px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-[#d4af37]/50 transition-all"
 						>
 							Choose Gift Card
 						</button>
@@ -365,11 +365,11 @@ Note: Backend integration pending.`);
 			{/* Purchase Modal */}
 			{showModal && selectedCard && (
 				<div className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-					<div className="bg-gradient-to-br from-gray-900 to-black border-2 border-[#d4af37] rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+					<div className="bg-linear-to-br from-gray-900 to-black border-2 border-[#d4af37] rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
 						{/* Modal Header */}
-						<div className="bg-gradient-to-r from-gray-900 to-black border-b border-[#d4af37] p-6">
+						<div className="bg-linear-to-r from-gray-900 to-black border-b border-[#d4af37] p-6">
 							<div className="flex items-center justify-between">
-								<h2 className="text-3xl font-bold bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+								<h2 className="text-3xl font-bold bg-linear-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
 									{selectedCard.name} Gift Card
 								</h2>
 								<button
@@ -388,7 +388,7 @@ Note: Backend integration pending.`);
 								className="h-48 rounded-2xl mb-6 border-2 border-[#d4af37] overflow-hidden"
 								style={{ background: selectedCard.gradient }}
 							>
-								<div className="h-full flex items-end p-6 bg-gradient-to-t from-black/70 to-transparent">
+								<div className="h-full flex items-end p-6 bg-linear-to-t from-black/70 to-transparent">
 									<div>
 										<div className="text-5xl font-bold text-white mb-2">€{selectedCard.amount}</div>
 										<div className="text-gray-300">Gift Card Value</div>
@@ -508,7 +508,7 @@ Note: Backend integration pending.`);
 								<button
 									onClick={handlePurchase}
 									disabled={loading}
-									className={`flex-1 px-6 py-3 bg-gradient-to-r from-[#d4af37] to-[#f4d03f] text-black rounded-xl font-semibold hover:shadow-lg transition-all ${
+									className={`flex-1 px-6 py-3 bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-black rounded-xl font-semibold hover:shadow-lg transition-all ${
 										loading ? 'opacity-50 cursor-not-allowed' : ''
 									}`}
 								>
@@ -523,11 +523,11 @@ Note: Backend integration pending.`);
 			{/* Redeem Modal */}
 			{showRedeemModal && (
 				<div className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
-					<div className="bg-gradient-to-br from-gray-900 to-black border-2 border-[#d4af37] rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+					<div className="bg-linear-to-br from-gray-900 to-black border-2 border-[#d4af37] rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
 						{/* Modal Header */}
-						<div className="bg-gradient-to-r from-gray-900 to-black border-b border-[#d4af37] p-6">
+						<div className="bg-linear-to-r from-gray-900 to-black border-b border-[#d4af37] p-6">
 							<div className="flex items-center justify-between">
-								<h2 className="text-2xl font-bold bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+								<h2 className="text-2xl font-bold bg-linear-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
 									Redeem Gift Card
 								</h2>
 								<button
@@ -618,7 +618,7 @@ Note: Backend integration pending.`);
 							{/* Info Box */}
 							<div className="bg-[#d4af37]/10 border border-[#d4af37]/30 rounded-xl p-4 mb-6">
 								<div className="flex items-start gap-3">
-									<Check className="w-5 h-5 text-[#d4af37] mt-0.5 flex-shrink-0" />
+									<Check className="w-5 h-5 text-[#d4af37] mt-0.5 shrink-0" />
 									<div className="text-sm text-gray-300">
 										<p className="font-semibold text-white mb-1">Valid for 12 months</p>
 										<p>Can be redeemed at any De Legends location</p>
@@ -637,7 +637,7 @@ Note: Backend integration pending.`);
 								<button
 									onClick={handleRedeem}
 									disabled={loading}
-									className={`flex-1 px-6 py-3 bg-gradient-to-r from-[#d4af37] to-[#f4d03f] text-black rounded-xl font-semibold hover:shadow-lg transition-all ${
+									className={`flex-1 px-6 py-3 bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-black rounded-xl font-semibold hover:shadow-lg transition-all ${
 										loading ? 'opacity-50 cursor-not-allowed' : ''
 									}`}
 								>

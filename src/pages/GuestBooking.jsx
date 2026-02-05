@@ -98,7 +98,7 @@ const GuestBooking = () => {
 
     fetchServices();
     fetchBarbers();
-  }, []);
+  }, [navigate, updateBookingDetails]);
 
   const fetchServices = async () => {
     try {
@@ -182,14 +182,14 @@ const GuestBooking = () => {
     if (bookingDate) {
       fetchAvailableSlots();
     }
-  }, [bookingDate, selectedBarber, selectedLocation]);
+  }, [bookingDate, selectedBarber, selectedLocation, fetchAvailableSlots]);
   
   // Check eligibility when moving to payment step
   useEffect(() => {
     if (currentStep === 3 && customerInfo.email && customerInfo.phone) {
       checkPaymentEligibility();
     }
-  }, [currentStep, customerInfo.email, customerInfo.phone]);
+  }, [currentStep, customerInfo.email, customerInfo.phone, checkPaymentEligibility]);
 
   const handleAddService = (service) => {
     const added = addService(service);
