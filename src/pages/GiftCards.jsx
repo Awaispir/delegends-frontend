@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { Gift, X as CloseIcon, CreditCard, Mail, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '../context/LanguageContext';
 
 const GiftCards = () => {
 	const navigate = useNavigate();
+	const { t } = useLanguage();
 	const [selectedCard, setSelectedCard] = useState(null);
 	const [showModal, setShowModal] = useState(false);
 	const [showRedeemModal, setShowRedeemModal] = useState(false);
