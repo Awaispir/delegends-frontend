@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { servicesAPI, barbersAPI } from '../utils/api';
 import { useBookingCart } from '../context/BookingCartContext';
@@ -123,7 +123,7 @@ const GuestBooking = () => {
   };
 
   // Fetch available time slots when date or barber changes
-  const fetchAvailableSlots = async () => {
+  const fetchAvailableSlots = useCallback(async () => {
     if (!bookingDate) {
       setAvailableSlots([]);
       return;
@@ -148,10 +148,10 @@ const GuestBooking = () => {
     } finally {
       setLoadingSlots(false);
     }
-  };
+  }, [bookingDate, selectedBarber, selectedLocation]);
   
   // Check payment eligibility when customer info changes
-  const checkPaymentEligibility = async () => {
+  const checkPaymentEligibility = useCallback(async () => {
     if (!customerInfo.email || !customerInfo.phone) {
       return;
     }
@@ -175,7 +175,7 @@ const GuestBooking = () => {
     } finally {
       setCheckingEligibility(false);
     }
-  };
+  }, [customerInfo.email, customerInfo.phone]);
   
   // Trigger slot fetch when date or barber changes
   useEffect(() => {
