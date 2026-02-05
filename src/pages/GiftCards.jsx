@@ -106,13 +106,13 @@ const GiftCards = () => {
 
 	const handlePurchase = async () => {
 		if (!recipientEmail || !recipientName) {
-			alert('Please fill in all required fields');
+			alert(t('giftCards.fillAllFields'));
 			return;
 		}
 
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailRegex.test(recipientEmail)) {
-			alert('Please enter a valid email address');
+			alert(t('giftCards.validEmailRequired'));
 			return;
 		}
 
@@ -144,13 +144,13 @@ const GiftCards = () => {
 
 	const handleRedeem = async () => {
 		if (!redeemCode || !redeemName || !redeemEmail || !redeemBarber || !redeemLocation) {
-			alert('Please fill in all required fields');
+			alert(t('giftCards.fillAllFields'));
 			return;
 		}
 
 		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 		if (!emailRegex.test(redeemEmail)) {
-			alert('Please enter a valid email address');
+			alert(t('giftCards.validEmailRequired'));
 			return;
 		}
 
@@ -167,18 +167,11 @@ const GiftCards = () => {
 
 			console.log('Gift card redeem data:', redeemData);
 			
-			alert(`✅ Gift card validated!
-
-Code: ${redeemCode}
-Customer: ${redeemName}
-Barber: ${redeemBarber}
-Location: ${redeemLocation}
-
-Note: Backend integration pending.`);
+			alert(`✅ ${t('giftCards.redeemSuccess')}`);
 			handleCloseRedeemModal();
 		} catch (error) {
 			console.error('Redeem error:', error);
-			alert('Failed to validate gift card. Please try again.');
+			alert(t('giftCards.redeemFailed'));
 		} finally {
 			setLoading(false);
 		}
@@ -268,18 +261,18 @@ Note: Backend integration pending.`);
 			<section className="container mx-auto px-4 py-16">
 				<div className="max-w-4xl mx-auto bg-linear-to-br from-gray-900 to-black border-2 border-[#d4af37] rounded-3xl p-8 md:p-12 shadow-2xl">
 					<h2 className="text-4xl font-bold text-center mb-4 bg-linear-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
-						Redeem Your Gift Card
+						{t('giftCards.redeemTitle')}
 					</h2>
 					<p className="text-center text-gray-400 mb-8">
-						Enter your gift card code to redeem your special birthday gift
+						{t('giftCards.redeemSubtitle')}
 					</p>
 
 					<div className="grid md:grid-cols-2 gap-6">
 						<div className="bg-linear-to-br from-gray-800/50 to-gray-900/50 rounded-2xl p-8 border border-[#d4af37]/30 flex flex-col items-center justify-center">
 							<Gift className="w-16 h-16 text-[#d4af37] mb-4" />
-							<h3 className="text-xl font-bold text-white mb-2">Birthday Gift Card</h3>
+							<h3 className="text-xl font-bold text-white mb-2">{t('giftCards.birthdayGiftCard')}</h3>
 							<p className="text-gray-400 text-center text-sm">
-								Celebrate your special day with a premium De Legends experience
+								{t('giftCards.celebrateSpecialDay')}
 							</p>
 						</div>
 
@@ -288,10 +281,10 @@ Note: Backend integration pending.`);
 								onClick={() => setShowRedeemModal(true)}
 								className="w-full bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-black py-4 rounded-full font-bold text-lg uppercase tracking-wider hover:shadow-lg hover:shadow-[#d4af37]/50 transition-all duration-300"
 							>
-								Redeem Now
+								{t('giftCards.redeemNow')}
 							</button>
 							<p className="text-xs text-gray-500 text-center">
-								Valid for 12 months • All De Legends locations
+								{t('giftCards.validityInfo')}
 							</p>
 						</div>
 					</div>
@@ -302,10 +295,10 @@ Note: Backend integration pending.`);
 			<section className="container mx-auto px-4 py-16">
 				<div className="text-center mb-12">
 					<h2 className="text-4xl font-bold mb-4 bg-linear-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
-						How Gift Cards Work
+						{t('giftCards.howItWorksTitle')}
 					</h2>
 					<p className="text-gray-400 max-w-3xl mx-auto">
-						Simple, secure, and convenient - the perfect gift in just three steps
+						{t('giftCards.howItWorksSubtitle')}
 					</p>
 				</div>
 				
@@ -313,26 +306,26 @@ Note: Backend integration pending.`);
 					{[
 						{
 							step: '1',
-							title: 'Choose Theme',
-							description: 'Select from our themed gift cards for any occasion'
+							titleKey: 'giftCards.step1Title',
+							descKey: 'giftCards.step1Desc'
 						},
 						{
 							step: '2',
-							title: 'Select Delivery',
-							description: 'Choose virtual delivery via email or physical card by mail'
+							titleKey: 'giftCards.step2Title',
+							descKey: 'giftCards.step2Desc'
 						},
 						{
 							step: '3',
-							title: 'Redeem',
-							description: 'Recipient can use the card at any De Legends location'
+							titleKey: 'giftCards.step3Title',
+							descKey: 'giftCards.step3Desc'
 						}
 					].map((item) => (
 						<div key={item.step} className="bg-gray-800/30 border border-[#d4af37]/30 rounded-2xl p-8 text-center hover:border-[#d4af37] transition-all duration-300">
 							<div className="inline-flex items-center justify-center w-16 h-16 bg-linear-to-r from-[#d4af37] to-[#f4d03f] rounded-full mb-4">
 								<span className="text-black font-bold text-2xl">{item.step}</span>
 							</div>
-							<h3 className="font-bold text-xl text-white mb-3">{item.title}</h3>
-							<p className="text-gray-400">{item.description}</p>
+							<h3 className="font-bold text-xl text-white mb-3">{t(item.titleKey)}</h3>
+							<p className="text-gray-400">{t(item.descKey)}</p>
 						</div>
 					))}
 				</div>
@@ -341,22 +334,22 @@ Note: Backend integration pending.`);
 			{/* Bottom CTA */}
 			<section className="bg-linear-to-r from-gray-900 to-black border-t border-[#d4af37]/30 py-16">
 				<div className="container mx-auto px-4 text-center">
-					<h2 className="text-4xl font-bold mb-4 text-white">Ready to Gift Excellence?</h2>
+					<h2 className="text-4xl font-bold mb-4 text-white">{t('giftCards.ctaTitle')}</h2>
 					<p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
-						Purchase a gift card today and share the De Legends experience with someone special.
+						{t('giftCards.ctaSubtitle')}
 					</p>
 					<div className="flex flex-wrap justify-center gap-4">
 						<button 
 							onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
 							className="bg-linear-to-r from-[#d4af37] to-[#f4d03f] text-black px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-[#d4af37]/50 transition-all"
 						>
-							Choose Gift Card
+							{t('giftCards.chooseGiftCard')}
 						</button>
 						<button 
 							onClick={() => navigate('/about')}
 							className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-black transition-all"
 						>
-							Learn More
+							{t('common.learnMore')}
 						</button>
 					</div>
 				</div>
@@ -370,7 +363,7 @@ Note: Backend integration pending.`);
 						<div className="bg-linear-to-r from-gray-900 to-black border-b border-[#d4af37] p-6">
 							<div className="flex items-center justify-between">
 								<h2 className="text-3xl font-bold bg-linear-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
-									{selectedCard.name} Gift Card
+									{t(selectedCard.nameKey)} {t('nav.giftCards')}
 								</h2>
 								<button
 									onClick={handleCloseModal}
@@ -391,7 +384,7 @@ Note: Backend integration pending.`);
 								<div className="h-full flex items-end p-6 bg-linear-to-t from-black/70 to-transparent">
 									<div>
 										<div className="text-5xl font-bold text-white mb-2">€{selectedCard.amount}</div>
-										<div className="text-gray-300">Gift Card Value</div>
+										<div className="text-gray-300">{t('giftCards.giftCardValue')}</div>
 									</div>
 								</div>
 							</div>
@@ -399,7 +392,7 @@ Note: Backend integration pending.`);
 							{/* Card Type Selection */}
 							<div className="mb-6">
 								<label className="block text-sm font-medium text-gray-300 mb-3">
-									Delivery Method
+									{t('giftCards.deliveryMethod')}
 								</label>
 								<div className="grid grid-cols-2 gap-4">
 									<button
@@ -413,8 +406,8 @@ Note: Backend integration pending.`);
 										<Mail className={`w-6 h-6 mx-auto mb-2 ${
 											cardType === 'virtual' ? 'text-[#d4af37]' : 'text-gray-500'
 										}`} />
-										<div className="font-semibold text-sm text-white">Virtual</div>
-										<div className="text-xs text-gray-400 mt-1">Instant email</div>
+										<div className="font-semibold text-sm text-white">{t('giftCards.virtual')}</div>
+										<div className="text-xs text-gray-400 mt-1">{t('giftCards.instantEmail')}</div>
 									</button>
 									<button
 										onClick={() => setCardType('physical')}
@@ -427,8 +420,8 @@ Note: Backend integration pending.`);
 										<CreditCard className={`w-6 h-6 mx-auto mb-2 ${
 											cardType === 'physical' ? 'text-[#d4af37]' : 'text-gray-500'
 										}`} />
-										<div className="font-semibold text-sm text-white">Physical</div>
-										<div className="text-xs text-gray-400 mt-1">3-5 days</div>
+										<div className="font-semibold text-sm text-white">{t('giftCards.physical')}</div>
+										<div className="text-xs text-gray-400 mt-1">{t('giftCards.days35')}</div>
 									</button>
 								</div>
 							</div>
@@ -437,7 +430,7 @@ Note: Backend integration pending.`);
 							<div className="space-y-4 mb-6">
 								<div>
 									<label className="block text-sm font-medium text-gray-300 mb-2">
-										Recipient Email *
+										{t('giftCards.recipientEmail')} *
 									</label>
 									<input
 										type="email"
@@ -450,7 +443,7 @@ Note: Backend integration pending.`);
 								</div>
 								<div>
 									<label className="block text-sm font-medium text-gray-300 mb-2">
-										Recipient Name *
+										{t('giftCards.recipientName')} *
 									</label>
 									<input
 										type="text"
@@ -463,14 +456,14 @@ Note: Backend integration pending.`);
 								</div>
 								<div>
 									<label className="block text-sm font-medium text-gray-300 mb-2">
-										Personal Message (Optional)
+										{t('giftCards.personalMessage')}
 									</label>
 									<textarea
 										rows="3"
 										value={personalMessage}
 										onChange={(e) => setPersonalMessage(e.target.value)}
 										className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
-										placeholder="Write a personal message..."
+										placeholder={t('giftCards.personalMessagePlaceholder')}
 									/>
 								</div>
 							</div>
@@ -478,18 +471,18 @@ Note: Backend integration pending.`);
 							{/* Price Summary */}
 							<div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 mb-6">
 								<div className="flex items-center justify-between mb-2 text-gray-300">
-									<span>Gift Card Amount</span>
+									<span>{t('giftCards.giftCardAmount')}</span>
 									<span className="font-semibold text-white">€{selectedCard.amount}</span>
 								</div>
 								{cardType === 'physical' && (
 									<div className="flex items-center justify-between mb-2 text-gray-300">
-										<span>Shipping</span>
+										<span>{t('giftCards.shipping')}</span>
 										<span className="font-semibold text-white">€5</span>
 									</div>
 								)}
 								<div className="border-t border-gray-700 pt-2 mt-2">
 									<div className="flex items-center justify-between">
-										<span className="font-bold text-white">Total</span>
+										<span className="font-bold text-white">{t('giftCards.total')}</span>
 										<span className="font-bold text-2xl text-[#ffd700]">
 											€{cardType === 'physical' ? selectedCard.amount + 5 : selectedCard.amount}
 										</span>
@@ -503,7 +496,7 @@ Note: Backend integration pending.`);
 									onClick={handleCloseModal}
 									className="flex-1 px-6 py-3 border-2 border-gray-700 text-gray-300 rounded-xl font-semibold hover:bg-gray-800 transition-all"
 								>
-									Cancel
+									{t('giftCards.cancel')}
 								</button>
 								<button
 									onClick={handlePurchase}
@@ -512,7 +505,7 @@ Note: Backend integration pending.`);
 										loading ? 'opacity-50 cursor-not-allowed' : ''
 									}`}
 								>
-									{loading ? 'Processing...' : 'Purchase'}
+									{loading ? t('giftCards.processing') : t('giftCards.purchase')}
 								</button>
 							</div>
 						</div>
@@ -528,7 +521,7 @@ Note: Backend integration pending.`);
 						<div className="bg-linear-to-r from-gray-900 to-black border-b border-[#d4af37] p-6">
 							<div className="flex items-center justify-between">
 								<h2 className="text-2xl font-bold bg-linear-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
-									Redeem Gift Card
+									{t('giftCards.redeemGiftCard')}
 								</h2>
 								<button
 									onClick={handleCloseRedeemModal}
@@ -544,7 +537,7 @@ Note: Backend integration pending.`);
 							<div className="space-y-4 mb-6">
 								<div>
 									<label className="block text-sm font-medium text-gray-300 mb-2">
-										Gift Card Code (8-12 digits) *
+										{t('giftCards.giftCardCode')} *
 									</label>
 									<input
 										type="text"
@@ -553,14 +546,14 @@ Note: Backend integration pending.`);
 										value={redeemCode}
 										onChange={(e) => setRedeemCode(e.target.value)}
 										className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent text-center text-xl tracking-wider font-mono"
-										placeholder="XXXX-XXXX-XXXX"
+										placeholder={t('giftCards.giftCardCodePlaceholder')}
 									/>
 								</div>
 
 								<div className="grid grid-cols-2 gap-4">
 									<div>
 										<label className="block text-sm font-medium text-gray-300 mb-2">
-											Your Name *
+											{t('giftCards.yourName')} *
 										</label>
 										<input
 											type="text"
@@ -573,7 +566,7 @@ Note: Backend integration pending.`);
 									</div>
 									<div>
 										<label className="block text-sm font-medium text-gray-300 mb-2">
-											Your Email *
+											{t('giftCards.yourEmail')} *
 										</label>
 										<input
 											type="email"
@@ -588,7 +581,7 @@ Note: Backend integration pending.`);
 
 								<div>
 									<label className="block text-sm font-medium text-gray-300 mb-2">
-										Barber Name *
+										{t('giftCards.barberName')} *
 									</label>
 									<input
 										type="text"
@@ -596,13 +589,13 @@ Note: Backend integration pending.`);
 										value={redeemBarber}
 										onChange={(e) => setRedeemBarber(e.target.value)}
 										className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
-										placeholder="Select your preferred barber"
+										placeholder={t('giftCards.selectBarber')}
 									/>
 								</div>
 
 								<div>
 									<label className="block text-sm font-medium text-gray-300 mb-2">
-										Salon Location *
+										{t('giftCards.salonLocation')} *
 									</label>
 									<input
 										type="text"
@@ -610,7 +603,7 @@ Note: Backend integration pending.`);
 										value={redeemLocation}
 										onChange={(e) => setRedeemLocation(e.target.value)}
 										className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
-										placeholder="Downtown, Uptown, etc."
+										placeholder={t('giftCards.locationPlaceholder')}
 									/>
 								</div>
 							</div>
@@ -620,8 +613,8 @@ Note: Backend integration pending.`);
 								<div className="flex items-start gap-3">
 									<Check className="w-5 h-5 text-[#d4af37] mt-0.5 shrink-0" />
 									<div className="text-sm text-gray-300">
-										<p className="font-semibold text-white mb-1">Valid for 12 months</p>
-										<p>Can be redeemed at any De Legends location</p>
+										<p className="font-semibold text-white mb-1">{t('giftCards.valid12Months')}</p>
+										<p>{t('giftCards.redeemAllLocations')}</p>
 									</div>
 								</div>
 							</div>
@@ -632,7 +625,7 @@ Note: Backend integration pending.`);
 									onClick={handleCloseRedeemModal}
 									className="flex-1 px-6 py-3 border-2 border-gray-700 text-gray-300 rounded-xl font-semibold hover:bg-gray-800 transition-all"
 								>
-									Cancel
+									{t('giftCards.cancel')}
 								</button>
 								<button
 									onClick={handleRedeem}
@@ -641,7 +634,7 @@ Note: Backend integration pending.`);
 										loading ? 'opacity-50 cursor-not-allowed' : ''
 									}`}
 								>
-									{loading ? 'Validating...' : 'Validate & Redeem'}
+									{loading ? t('giftCards.validating') : t('giftCards.validateRedeem')}
 								</button>
 							</div>
 						</div>
