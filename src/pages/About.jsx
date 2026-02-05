@@ -41,7 +41,7 @@ const About = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-linear-to-r from-gray-900 to-gray-800 text-white py-20">
+      <section className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-4">{t('about.title')}</h1>
           <p className="text-xl text-gray-300">{t('about.subtitle')}</p>
@@ -184,7 +184,7 @@ const About = () => {
         </div>
       </section> */}
        {/* CTA Section */}
-      <section className="py-20 bg-linear-to-r from-gray-900 to-gray-800 text-white">
+      <section className="py-20 bg-gradient-to-r from-gray-900 to-gray-800 text-white">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-5xl font-bold mb-6">{t('about.readyToLookBest')}</h2>
           <p className="text-xl mb-10 text-gray-300 max-w-2xl mx-auto">{t('about.readyToLookBestDesc')}</p>

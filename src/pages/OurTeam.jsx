@@ -39,7 +39,7 @@ const OurTeam = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-20">
+      <section className="bg-linear-to-r from-gray-900 to-gray-800 text-white py-20">
         <div className="container mx-auto px-4 text-center">
           <h1 className="text-5xl font-bold mb-4">{t('team.title')}</h1>
           <p className="text-xl text-gray-300">
