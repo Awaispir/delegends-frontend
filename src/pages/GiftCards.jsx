@@ -22,58 +22,58 @@ const GiftCards = () => {
 	const [redeemBarber, setRedeemBarber] = useState('');
 	const [redeemLocation, setRedeemLocation] = useState('');
 
-	// Gift card themes
+	// Gift card themes with translation keys
 	const giftCardThemes = [
 		{
 			id: 1,
-			name: 'Thank You',
+			nameKey: 'giftCards.thankYou',
 			amount: 25,
-			description: 'Express gratitude with our elegant Thank You gift card',
+			descKey: 'giftCards.thankYouDesc',
 			gradient: 'linear-gradient(135deg, #8B0000 0%, #4a0000 100%)',
 			type: 'virtual',
 			popular: false
 		},
 		{
 			id: 2,
-			name: 'Birthday',
+			nameKey: 'giftCards.birthday',
 			amount: 50,
-			description: 'Celebrate special moments with our luxurious Birthday gift card',
+			descKey: 'giftCards.birthdayDesc',
 			gradient: 'linear-gradient(135deg, #8B0000 0%, #660000 100%)',
 			type: 'physical',
 			popular: true
 		},
 		{
 			id: 3,
-			name: 'Christmas',
+			nameKey: 'giftCards.christmas',
 			amount: 75,
-			description: 'Spread holiday cheer with our festive Christmas gift card',
+			descKey: 'giftCards.christmasDesc',
 			gradient: 'linear-gradient(135deg, #0a3d0a 0%, #041e04 100%)',
 			type: 'virtual',
 			popular: false
 		},
 		{
 			id: 4,
-			name: 'Valentine\'s',
+			nameKey: 'giftCards.valentines',
 			amount: 100,
-			description: 'Show your love with our romantic Valentine\'s gift card',
+			descKey: 'giftCards.valentinesDesc',
 			gradient: 'linear-gradient(135deg, #4b0033 0%, #2d001e 100%)',
 			type: 'physical',
 			popular: true
 		},
 		{
 			id: 5,
-			name: 'Anniversary',
+			nameKey: 'giftCards.anniversary',
 			amount: 150,
-			description: 'Celebrate milestones with our sophisticated Anniversary gift card',
+			descKey: 'giftCards.anniversaryDesc',
 			gradient: 'linear-gradient(135deg, #1a334d 0%, #0a1a29 100%)',
 			type: 'virtual',
 			popular: false
 		},
 		{
 			id: 6,
-			name: 'Corporate',
+			nameKey: 'giftCards.corporate',
 			amount: 200,
-			description: 'Elevate business relationships with our premium Corporate gift card',
+			descKey: 'giftCards.corporateDesc',
 			gradient: 'linear-gradient(135deg, #3d2b1f 0%, #251910 100%)',
 			type: 'physical',
 			popular: false
@@ -194,10 +194,10 @@ Note: Backend integration pending.`);
 						<Gift className="w-10 h-10 text-black" />
 					</div>
 					<h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
-						LUXEGIFT
+						{t('giftCards.title')}
 					</h1>
 					<p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
-						Premium gift cards crafted with elegance. Perfect for every occasion with our signature golden touch.
+						{t('giftCards.subtitle')}
 					</p>
 				</div>
 			</section>
@@ -217,13 +217,13 @@ Note: Backend integration pending.`);
 									? 'bg-blue-600 text-white' 
 									: 'bg-purple-600 text-white'
 							}`}>
-								{card.type.toUpperCase()}
+								{t(`giftCards.${card.type}`).toUpperCase()}
 							</div>
 
 							{/* Popular Badge */}
 							{card.popular && (
 								<div className="absolute top-4 left-4 z-10 px-3 py-1 bg-gradient-to-r from-[#ffd700] to-[#b8860b] text-black rounded-full text-xs font-bold">
-									POPULAR
+									{t('giftCards.popular')}
 								</div>
 							)}
 
@@ -244,16 +244,16 @@ Note: Backend integration pending.`);
 							{/* Card Content */}
 							<div className="p-6">
 								<h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
-									{card.name}
+									{t(card.nameKey)}
 								</h3>
 								<p className="text-gray-400 text-sm mb-4 min-h-[60px]">
-									{card.description}
+									{t(card.descKey)}
 								</p>
 								<div className="text-4xl font-bold text-[#ffd700] mb-4 text-shadow">
 									€{card.amount}
 								</div>
 								<button className="w-full bg-black border-2 border-[#d4af37] text-[#ffd700] py-3 rounded-full font-semibold uppercase tracking-wider hover:bg-[#d4af37] hover:text-black transition-all duration-300 shadow-lg">
-									View Details
+									{t('giftCards.viewDetails')}
 								</button>
 							</div>
 
