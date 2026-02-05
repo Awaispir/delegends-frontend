@@ -1,30 +1,86 @@
 import { useState } from 'react';
-import { Gift, X as CloseIcon, CreditCard, Mail } from 'lucide-react';
+import { Gift, X as CloseIcon, CreditCard, Mail, Check } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-// import { giftCardsAPI } from '../utils/api'; // For future Stripe integration
 
 const GiftCards = () => {
 	const navigate = useNavigate();
 	const [selectedCard, setSelectedCard] = useState(null);
 	const [showModal, setShowModal] = useState(false);
+	const [showRedeemModal, setShowRedeemModal] = useState(false);
 	const [cardType, setCardType] = useState('virtual');
 	const [recipientEmail, setRecipientEmail] = useState('');
 	const [recipientName, setRecipientName] = useState('');
 	const [personalMessage, setPersonalMessage] = useState('');
 	const [loading, setLoading] = useState(false);
 
-	// Fixed denomination amounts in EUR
-	const giftCardAmounts = [
-		{ id: 1, amount: 25, popular: false },
-		{ id: 2, amount: 50, popular: true },
-		{ id: 3, amount: 75, popular: false },
-		{ id: 4, amount: 100, popular: true },
-		{ id: 5, amount: 150, popular: false },
-		{ id: 6, amount: 200, popular: false },
+	// Redeem form state
+	const [redeemCode, setRedeemCode] = useState('');
+	const [redeemName, setRedeemName] = useState('');
+	const [redeemEmail, setRedeemEmail] = useState('');
+	const [redeemBarber, setRedeemBarber] = useState('');
+	const [redeemLocation, setRedeemLocation] = useState('');
+
+	// Gift card themes
+	const giftCardThemes = [
+		{
+			id: 1,
+			name: 'Thank You',
+			amount: 25,
+			description: 'Express gratitude with our elegant Thank You gift card',
+			gradient: 'linear-gradient(135deg, #8B0000 0%, #4a0000 100%)',
+			type: 'virtual',
+			popular: false
+		},
+		{
+			id: 2,
+			name: 'Birthday',
+			amount: 50,
+			description: 'Celebrate special moments with our luxurious Birthday gift card',
+			gradient: 'linear-gradient(135deg, #8B0000 0%, #660000 100%)',
+			type: 'physical',
+			popular: true
+		},
+		{
+			id: 3,
+			name: 'Christmas',
+			amount: 75,
+			description: 'Spread holiday cheer with our festive Christmas gift card',
+			gradient: 'linear-gradient(135deg, #0a3d0a 0%, #041e04 100%)',
+			type: 'virtual',
+			popular: false
+		},
+		{
+			id: 4,
+			name: 'Valentine\'s',
+			amount: 100,
+			description: 'Show your love with our romantic Valentine\'s gift card',
+			gradient: 'linear-gradient(135deg, #4b0033 0%, #2d001e 100%)',
+			type: 'physical',
+			popular: true
+		},
+		{
+			id: 5,
+			name: 'Anniversary',
+			amount: 150,
+			description: 'Celebrate milestones with our sophisticated Anniversary gift card',
+			gradient: 'linear-gradient(135deg, #1a334d 0%, #0a1a29 100%)',
+			type: 'virtual',
+			popular: false
+		},
+		{
+			id: 6,
+			name: 'Corporate',
+			amount: 200,
+			description: 'Elevate business relationships with our premium Corporate gift card',
+			gradient: 'linear-gradient(135deg, #3d2b1f 0%, #251910 100%)',
+			type: 'physical',
+			popular: false
+		}
 	];
 
 	const handleCardClick = (card) => {
 		setSelectedCard(card);
+		setCardType(card.type);
 		setShowModal(true);
 	};
 
@@ -35,6 +91,15 @@ const GiftCards = () => {
 		setRecipientEmail('');
 		setRecipientName('');
 		setPersonalMessage('');
+	};
+
+	const handleCloseRedeemModal = () => {
+		setShowRedeemModal(false);
+		setRedeemCode('');
+		setRedeemName('');
+		setRedeemEmail('');
+		setRedeemBarber('');
+		setRedeemLocation('');
 	};
 
 	const handlePurchase = async () => {
@@ -54,6 +119,7 @@ const GiftCards = () => {
 		try {
 			const giftCardData = {
 				amount: selectedCard?.amount,
+				theme: selectedCard?.name,
 				cardType,
 				purchaserName: 'Customer',
 				purchaserEmail: recipientEmail,
@@ -63,8 +129,6 @@ const GiftCards = () => {
 			};
 
 			console.log('Gift card purchase data:', giftCardData);
-			// TODO: Uncomment when Stripe is configured
-			// await giftCardsAPI.purchase(giftCardData);
 			
 			alert(`✅ Gift card for €${selectedCard?.amount} will be sent to ${recipientEmail}!\n\nNote: Payment integration pending. In production, this will process via Stripe.`);
 			handleCloseModal();
@@ -76,157 +140,219 @@ const GiftCards = () => {
 		}
 	};
 
+	const handleRedeem = async () => {
+		if (!redeemCode || !redeemName || !redeemEmail || !redeemBarber || !redeemLocation) {
+			alert('Please fill in all required fields');
+			return;
+		}
+
+		const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		if (!emailRegex.test(redeemEmail)) {
+			alert('Please enter a valid email address');
+			return;
+		}
+
+		setLoading(true);
+
+		try {
+			const redeemData = {
+				code: redeemCode,
+				customerName: redeemName,
+				customerEmail: redeemEmail,
+				barberName: redeemBarber,
+				location: redeemLocation
+			};
+
+			console.log('Gift card redeem data:', redeemData);
+			
+			alert(`✅ Gift card validated!
+
+Code: ${redeemCode}
+Customer: ${redeemName}
+Barber: ${redeemBarber}
+Location: ${redeemLocation}
+
+Note: Backend integration pending.`);
+			handleCloseRedeemModal();
+		} catch (error) {
+			console.error('Redeem error:', error);
+			alert('Failed to validate gift card. Please try again.');
+		} finally {
+			setLoading(false);
+		}
+	};
+
 	return (
-		<div className="min-h-screen bg-gray-50">
-			{/* Hero Section - Matching Services/Products pattern */}
-			<section className="bg-gradient-to-r from-gray-900 to-gray-800 text-white py-20">
-				<div className="container mx-auto px-4 text-center">
-					<div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 rounded-full mb-4">
-						<Gift className="w-8 h-8 text-gray-900" />
+		<div className="min-h-screen bg-gradient-to-b from-gray-900 via-black to-gray-900">
+			{/* Hero Section */}
+			<section className="relative py-20 overflow-hidden">
+				<div className="absolute inset-0 bg-gradient-to-r from-[#d4af37]/10 to-transparent"></div>
+				<div className="container mx-auto px-4 text-center relative z-10">
+					<div className="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-r from-[#d4af37] to-[#f4d03f] rounded-full mb-6 shadow-lg">
+						<Gift className="w-10 h-10 text-black" />
 					</div>
-					<h1 className="text-5xl font-bold mb-4">Gift Cards</h1>
-					<p className="text-xl text-gray-300 max-w-2xl mx-auto">
-						Give the gift of grooming excellence. Choose from our premium gift card denominations.
+					<h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+						LUXEGIFT
+					</h1>
+					<p className="text-xl text-gray-300 max-w-2xl mx-auto leading-relaxed">
+						Premium gift cards crafted with elegance. Perfect for every occasion with our signature golden touch.
 					</p>
 				</div>
 			</section>
 
-			{/* Main Content */}
-			<div className="container mx-auto px-4 py-16">
-				{/* Gift Cards Grid Section */}
-				<section className="mb-20">
-					<div className="text-center mb-12">
-						<h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-							Available Denominations
-						</h2>
-						<p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">
-							Select the perfect amount for your gift. All gift cards are valid for 12 months at any De Legends location.
-						</p>
-					</div>
-					
-					<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-6 max-w-6xl mx-auto">
-						{giftCardAmounts.map((card) => (
-							<div
-								key={card.id}
-								onClick={() => handleCardClick(card)}
-								className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 cursor-pointer transform hover:-translate-y-1 border border-gray-200"
-							>
-								{/* Popular Badge */}
-								{card.popular && (
-									<div className="bg-yellow-400 text-gray-900 px-4 py-1 text-center text-xs font-bold">
-										POPULAR CHOICE
-									</div>
-								)}
+			{/* Gift Cards Grid */}
+			<section className="container mx-auto px-4 py-16">
+				<div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
+					{giftCardThemes.map((card) => (
+						<div
+							key={card.id}
+							onClick={() => handleCardClick(card)}
+							className="group relative bg-gray-800/50 rounded-2xl overflow-hidden border-2 border-[#d4af37] cursor-pointer transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl hover:shadow-[#d4af37]/40"
+						>
+							{/* Type Badge */}
+							<div className={`absolute top-4 right-4 z-10 px-3 py-1 rounded-full text-xs font-bold ${
+								card.type === 'virtual' 
+									? 'bg-blue-600 text-white' 
+									: 'bg-purple-600 text-white'
+							}`}>
+								{card.type.toUpperCase()}
+							</div>
 
-								{/* Card Visual */}
-								<div className="bg-gradient-to-br from-gray-900 via-gray-800 to-black p-8 relative overflow-hidden min-h-[200px] flex flex-col justify-between">
-									{/* Logo */}
-									<div className="flex items-center gap-2 mb-6">
-										<Gift className="w-5 h-5 text-yellow-400" />
+							{/* Popular Badge */}
+							{card.popular && (
+								<div className="absolute top-4 left-4 z-10 px-3 py-1 bg-gradient-to-r from-[#ffd700] to-[#b8860b] text-black rounded-full text-xs font-bold">
+									POPULAR
+								</div>
+							)}
+
+							{/* Card Visual */}
+							<div 
+								className="h-48 relative overflow-hidden"
+								style={{ background: card.gradient }}
+							>
+								<div className="absolute inset-0 bg-gradient-to-b from-transparent to-black/70"></div>
+								<div className="absolute bottom-4 left-4 right-4 z-10">
+									<div className="flex items-center gap-2 mb-2">
+										<Gift className="w-5 h-5 text-[#d4af37]" />
 										<span className="text-white font-bold text-sm">De Legends</span>
 									</div>
-
-									{/* Amount */}
-									<div>
-										<div className="text-5xl font-bold text-white mb-2">
-											€{card.amount}
-										</div>
-										<div className="text-gray-400 text-sm">Gift Card</div>
-									</div>
-
-									{/* Decorative elements */}
-									<div className="absolute top-0 right-0 w-32 h-32 bg-yellow-400 opacity-10 rounded-full -mr-16 -mt-16"></div>
-									<div className="absolute bottom-0 left-0 w-24 h-24 bg-yellow-400 opacity-10 rounded-full -ml-12 -mb-12"></div>
-								</div>
-
-								{/* Card Info */}
-								<div className="p-6 border-t border-gray-200">
-									<div className="space-y-3 mb-4">
-										<div className="flex items-center gap-2 text-sm text-gray-600">
-											<div className="w-1.5 h-1.5 bg-yellow-400 rounded-full"></div>
-											{card.amount >= 100 ? 'Multiple services' : 'Single service'}
-										</div>
-										<div className="flex items-center gap-2 text-sm text-gray-600">
-											<div className="w-1.5 h-1.5 bg-yellow-400 rounded-full"></div>
-											Valid for 12 months
-										</div>
-										<div className="flex items-center gap-2 text-sm text-gray-600">
-											<div className="w-1.5 h-1.5 bg-yellow-400 rounded-full"></div>
-											All locations
-										</div>
-									</div>
-
-									<button className="w-full bg-gray-900 text-white py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors">
-										Select Amount
-									</button>
 								</div>
 							</div>
-						))}
-					</div>
-				</section>
 
-				{/* How It Works Section */}
-				<section className="mb-20">
-					<div className="text-center mb-12">
-						<h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-3">
-							How Gift Cards Work
-						</h2>
-						<p className="text-gray-600 max-w-3xl mx-auto leading-relaxed">
-							Simple, secure, and convenient - the perfect gift in just three steps
-						</p>
-					</div>
-					
-					<div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-						<div className="bg-white rounded-xl p-8 shadow-lg text-center">
-							<div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 rounded-full mb-4">
-								<span className="text-gray-900 font-bold text-2xl">1</span>
+							{/* Card Content */}
+							<div className="p-6">
+								<h3 className="text-2xl font-bold mb-2 bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+									{card.name}
+								</h3>
+								<p className="text-gray-400 text-sm mb-4 min-h-[60px]">
+									{card.description}
+								</p>
+								<div className="text-4xl font-bold text-[#ffd700] mb-4 text-shadow">
+									€{card.amount}
+								</div>
+								<button className="w-full bg-black border-2 border-[#d4af37] text-[#ffd700] py-3 rounded-full font-semibold uppercase tracking-wider hover:bg-[#d4af37] hover:text-black transition-all duration-300 shadow-lg">
+									View Details
+								</button>
 							</div>
-							<h3 className="font-bold text-xl text-gray-900 mb-3">Choose Amount</h3>
-							<p className="text-gray-600">
-								Select from our fixed denominations ranging from €25 to €200
-							</p>
-						</div>
-						
-						<div className="bg-white rounded-xl p-8 shadow-lg text-center">
-							<div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 rounded-full mb-4">
-								<span className="text-gray-900 font-bold text-2xl">2</span>
-							</div>
-							<h3 className="font-bold text-xl text-gray-900 mb-3">Select Delivery</h3>
-							<p className="text-gray-600">
-								Choose virtual delivery via email or physical card by mail
-							</p>
-						</div>
-						
-						<div className="bg-white rounded-xl p-8 shadow-lg text-center">
-							<div className="inline-flex items-center justify-center w-16 h-16 bg-yellow-400 rounded-full mb-4">
-								<span className="text-gray-900 font-bold text-2xl">3</span>
-							</div>
-							<h3 className="font-bold text-xl text-gray-900 mb-3">Redeem</h3>
-							<p className="text-gray-600">
-								Recipient can use the card at any De Legends location
-							</p>
-						</div>
-					</div>
-				</section>
-			</div>
 
-			{/* Bottom CTA Section - Matching Products page pattern */}
-			<section className="bg-[#1a1f2e] text-white py-16">
+							{/* Decorative Border */}
+							<div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[#b8860b] via-[#ffd700] to-[#b8860b]"></div>
+						</div>
+					))}
+				</div>
+			</section>
+
+			{/* Redeem Section */}
+			<section className="container mx-auto px-4 py-16">
+				<div className="max-w-4xl mx-auto bg-gradient-to-br from-gray-900 to-black border-2 border-[#d4af37] rounded-3xl p-8 md:p-12 shadow-2xl">
+					<h2 className="text-4xl font-bold text-center mb-4 bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+						Redeem Your Gift Card
+					</h2>
+					<p className="text-center text-gray-400 mb-8">
+						Enter your gift card code to redeem your special birthday gift
+					</p>
+
+					<div className="grid md:grid-cols-2 gap-6">
+						<div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 rounded-2xl p-8 border border-[#d4af37]/30 flex flex-col items-center justify-center">
+							<Gift className="w-16 h-16 text-[#d4af37] mb-4" />
+							<h3 className="text-xl font-bold text-white mb-2">Birthday Gift Card</h3>
+							<p className="text-gray-400 text-center text-sm">
+								Celebrate your special day with a premium De Legends experience
+							</p>
+						</div>
+
+						<div className="space-y-4">
+							<button
+								onClick={() => setShowRedeemModal(true)}
+								className="w-full bg-gradient-to-r from-[#d4af37] to-[#f4d03f] text-black py-4 rounded-full font-bold text-lg uppercase tracking-wider hover:shadow-lg hover:shadow-[#d4af37]/50 transition-all duration-300"
+							>
+								Redeem Now
+							</button>
+							<p className="text-xs text-gray-500 text-center">
+								Valid for 12 months • All De Legends locations
+							</p>
+						</div>
+					</div>
+				</div>
+			</section>
+
+			{/* How It Works Section */}
+			<section className="container mx-auto px-4 py-16">
+				<div className="text-center mb-12">
+					<h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+						How Gift Cards Work
+					</h2>
+					<p className="text-gray-400 max-w-3xl mx-auto">
+						Simple, secure, and convenient - the perfect gift in just three steps
+					</p>
+				</div>
+				
+				<div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+					{[
+						{
+							step: '1',
+							title: 'Choose Theme',
+							description: 'Select from our themed gift cards for any occasion'
+						},
+						{
+							step: '2',
+							title: 'Select Delivery',
+							description: 'Choose virtual delivery via email or physical card by mail'
+						},
+						{
+							step: '3',
+							title: 'Redeem',
+							description: 'Recipient can use the card at any De Legends location'
+						}
+					].map((item) => (
+						<div key={item.step} className="bg-gray-800/30 border border-[#d4af37]/30 rounded-2xl p-8 text-center hover:border-[#d4af37] transition-all duration-300">
+							<div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-[#d4af37] to-[#f4d03f] rounded-full mb-4">
+								<span className="text-black font-bold text-2xl">{item.step}</span>
+							</div>
+							<h3 className="font-bold text-xl text-white mb-3">{item.title}</h3>
+							<p className="text-gray-400">{item.description}</p>
+						</div>
+					))}
+				</div>
+			</section>
+
+			{/* Bottom CTA */}
+			<section className="bg-gradient-to-r from-gray-900 to-black border-t border-[#d4af37]/30 py-16">
 				<div className="container mx-auto px-4 text-center">
-					<h2 className="text-4xl font-bold mb-4">Ready to Gift Excellence?</h2>
+					<h2 className="text-4xl font-bold mb-4 text-white">Ready to Gift Excellence?</h2>
 					<p className="text-gray-300 text-lg mb-8 max-w-2xl mx-auto">
 						Purchase a gift card today and share the De Legends experience with someone special.
 					</p>
 					<div className="flex flex-wrap justify-center gap-4">
 						<button 
 							onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-							className="bg-[#d4af37] text-white px-8 py-3 rounded-md font-semibold hover:bg-[#c49d2e] transition-colors"
+							className="bg-gradient-to-r from-[#d4af37] to-[#f4d03f] text-black px-8 py-3 rounded-full font-semibold hover:shadow-lg hover:shadow-[#d4af37]/50 transition-all"
 						>
 							Choose Gift Card
 						</button>
 						<button 
 							onClick={() => navigate('/about')}
-							className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-md font-semibold hover:bg-white hover:text-[#1a1f2e] transition-colors"
+							className="bg-transparent border-2 border-white text-white px-8 py-3 rounded-full font-semibold hover:bg-white hover:text-black transition-all"
 						>
 							Learn More
 						</button>
@@ -236,139 +362,286 @@ const GiftCards = () => {
 
 			{/* Purchase Modal */}
 			{showModal && selectedCard && (
-				<div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-					<div className="bg-white rounded-2xl w-full max-w-lg p-6 md:p-8 max-h-[90vh] overflow-y-auto">
+				<div className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+					<div className="bg-gradient-to-br from-gray-900 to-black border-2 border-[#d4af37] rounded-3xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
 						{/* Modal Header */}
-						<div className="flex items-center justify-between mb-6">
-							<h2 className="text-2xl font-bold text-gray-900">
-								€{selectedCard.amount} Gift Card
-							</h2>
-							<button
-								onClick={handleCloseModal}
-								className="text-gray-400 hover:text-gray-600 transition-colors"
-							>
-								<CloseIcon className="w-6 h-6" />
-							</button>
-						</div>
-
-						{/* Card Type Selection */}
-						<div className="mb-6">
-							<label className="block text-sm font-medium text-gray-700 mb-3">
-								Delivery Method
-							</label>
-							<div className="grid grid-cols-2 gap-4">
+						<div className="bg-gradient-to-r from-gray-900 to-black border-b border-[#d4af37] p-6">
+							<div className="flex items-center justify-between">
+								<h2 className="text-3xl font-bold bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+									{selectedCard.name} Gift Card
+								</h2>
 								<button
-									onClick={() => setCardType('virtual')}
-									className={`p-4 border-2 rounded-lg transition-all ${
-										cardType === 'virtual'
-											? 'border-yellow-400 bg-yellow-50'
-											: 'border-gray-200 hover:border-gray-300'
-									}`}
+									onClick={handleCloseModal}
+									className="text-[#d4af37] hover:text-[#ffd700] transition-colors"
 								>
-									<Mail className={`w-6 h-6 mx-auto mb-2 ${
-										cardType === 'virtual' ? 'text-yellow-600' : 'text-gray-400'
-									}`} />
-									<div className="font-semibold text-sm">Virtual</div>
-									<div className="text-xs text-gray-500 mt-1">Instant email</div>
-								</button>
-								<button
-									onClick={() => setCardType('physical')}
-									className={`p-4 border-2 rounded-lg transition-all ${
-										cardType === 'physical'
-											? 'border-yellow-400 bg-yellow-50'
-											: 'border-gray-200 hover:border-gray-300'
-									}`}
-								>
-									<CreditCard className={`w-6 h-6 mx-auto mb-2 ${
-										cardType === 'physical' ? 'text-yellow-600' : 'text-gray-400'
-									}`} />
-									<div className="font-semibold text-sm">Physical</div>
-									<div className="text-xs text-gray-500 mt-1">3-5 days</div>
+									<CloseIcon className="w-6 h-6" />
 								</button>
 							</div>
 						</div>
 
-						{/* Form Fields */}
-						<div className="space-y-4 mb-6">
-							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-2">
-									Recipient Email *
-								</label>
-								<input
-									type="email"
-									required
-									value={recipientEmail}
-									onChange={(e) => setRecipientEmail(e.target.value)}
-									className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-									placeholder="recipient@example.com"
-								/>
+						{/* Modal Body */}
+						<div className="p-8">
+							{/* Card Preview */}
+							<div 
+								className="h-48 rounded-2xl mb-6 border-2 border-[#d4af37] overflow-hidden"
+								style={{ background: selectedCard.gradient }}
+							>
+								<div className="h-full flex items-end p-6 bg-gradient-to-t from-black/70 to-transparent">
+									<div>
+										<div className="text-5xl font-bold text-white mb-2">€{selectedCard.amount}</div>
+										<div className="text-gray-300">Gift Card Value</div>
+									</div>
+								</div>
 							</div>
-							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-2">
-									Recipient Name *
+
+							{/* Card Type Selection */}
+							<div className="mb-6">
+								<label className="block text-sm font-medium text-gray-300 mb-3">
+									Delivery Method
 								</label>
-								<input
-									type="text"
-									required
-									value={recipientName}
-									onChange={(e) => setRecipientName(e.target.value)}
-									className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-									placeholder="John Doe"
-								/>
+								<div className="grid grid-cols-2 gap-4">
+									<button
+										onClick={() => setCardType('virtual')}
+										className={`p-4 border-2 rounded-xl transition-all ${
+											cardType === 'virtual'
+												? 'border-[#d4af37] bg-[#d4af37]/10'
+												: 'border-gray-700 hover:border-gray-600'
+										}`}
+									>
+										<Mail className={`w-6 h-6 mx-auto mb-2 ${
+											cardType === 'virtual' ? 'text-[#d4af37]' : 'text-gray-500'
+										}`} />
+										<div className="font-semibold text-sm text-white">Virtual</div>
+										<div className="text-xs text-gray-400 mt-1">Instant email</div>
+									</button>
+									<button
+										onClick={() => setCardType('physical')}
+										className={`p-4 border-2 rounded-xl transition-all ${
+											cardType === 'physical'
+												? 'border-[#d4af37] bg-[#d4af37]/10'
+												: 'border-gray-700 hover:border-gray-600'
+										}`}
+									>
+										<CreditCard className={`w-6 h-6 mx-auto mb-2 ${
+											cardType === 'physical' ? 'text-[#d4af37]' : 'text-gray-500'
+										}`} />
+										<div className="font-semibold text-sm text-white">Physical</div>
+										<div className="text-xs text-gray-400 mt-1">3-5 days</div>
+									</button>
+								</div>
 							</div>
-							<div>
-								<label className="block text-sm font-medium text-gray-700 mb-2">
-									Personal Message (Optional)
-								</label>
-								<textarea
-									rows="3"
-									value={personalMessage}
-									onChange={(e) => setPersonalMessage(e.target.value)}
-									className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent"
-									placeholder="Write a personal message..."
-								/>
+
+							{/* Form Fields */}
+							<div className="space-y-4 mb-6">
+								<div>
+									<label className="block text-sm font-medium text-gray-300 mb-2">
+										Recipient Email *
+									</label>
+									<input
+										type="email"
+										required
+										value={recipientEmail}
+										onChange={(e) => setRecipientEmail(e.target.value)}
+										className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+										placeholder="recipient@example.com"
+									/>
+								</div>
+								<div>
+									<label className="block text-sm font-medium text-gray-300 mb-2">
+										Recipient Name *
+									</label>
+									<input
+										type="text"
+										required
+										value={recipientName}
+										onChange={(e) => setRecipientName(e.target.value)}
+										className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+										placeholder="John Doe"
+									/>
+								</div>
+								<div>
+									<label className="block text-sm font-medium text-gray-300 mb-2">
+										Personal Message (Optional)
+									</label>
+									<textarea
+										rows="3"
+										value={personalMessage}
+										onChange={(e) => setPersonalMessage(e.target.value)}
+										className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+										placeholder="Write a personal message..."
+									/>
+								</div>
+							</div>
+
+							{/* Price Summary */}
+							<div className="bg-gray-800/50 border border-gray-700 rounded-xl p-6 mb-6">
+								<div className="flex items-center justify-between mb-2 text-gray-300">
+									<span>Gift Card Amount</span>
+									<span className="font-semibold text-white">€{selectedCard.amount}</span>
+								</div>
+								{cardType === 'physical' && (
+									<div className="flex items-center justify-between mb-2 text-gray-300">
+										<span>Shipping</span>
+										<span className="font-semibold text-white">€5</span>
+									</div>
+								)}
+								<div className="border-t border-gray-700 pt-2 mt-2">
+									<div className="flex items-center justify-between">
+										<span className="font-bold text-white">Total</span>
+										<span className="font-bold text-2xl text-[#ffd700]">
+											€{cardType === 'physical' ? selectedCard.amount + 5 : selectedCard.amount}
+										</span>
+									</div>
+								</div>
+							</div>
+
+							{/* Action Buttons */}
+							<div className="flex gap-3">
+								<button
+									onClick={handleCloseModal}
+									className="flex-1 px-6 py-3 border-2 border-gray-700 text-gray-300 rounded-xl font-semibold hover:bg-gray-800 transition-all"
+								>
+									Cancel
+								</button>
+								<button
+									onClick={handlePurchase}
+									disabled={loading}
+									className={`flex-1 px-6 py-3 bg-gradient-to-r from-[#d4af37] to-[#f4d03f] text-black rounded-xl font-semibold hover:shadow-lg transition-all ${
+										loading ? 'opacity-50 cursor-not-allowed' : ''
+									}`}
+								>
+									{loading ? 'Processing...' : 'Purchase'}
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			)}
+
+			{/* Redeem Modal */}
+			{showRedeemModal && (
+				<div className="fixed inset-0 bg-black/90 flex items-center justify-center p-4 z-50 backdrop-blur-sm">
+					<div className="bg-gradient-to-br from-gray-900 to-black border-2 border-[#d4af37] rounded-3xl w-full max-w-lg max-h-[90vh] overflow-y-auto">
+						{/* Modal Header */}
+						<div className="bg-gradient-to-r from-gray-900 to-black border-b border-[#d4af37] p-6">
+							<div className="flex items-center justify-between">
+								<h2 className="text-2xl font-bold bg-gradient-to-r from-[#ffd700] to-[#b8860b] bg-clip-text text-transparent">
+									Redeem Gift Card
+								</h2>
+								<button
+									onClick={handleCloseRedeemModal}
+									className="text-[#d4af37] hover:text-[#ffd700] transition-colors"
+								>
+									<CloseIcon className="w-6 h-6" />
+								</button>
 							</div>
 						</div>
 
-						{/* Price Summary */}
-						<div className="bg-gray-50 rounded-lg p-4 mb-6">
-							<div className="flex items-center justify-between mb-2">
-								<span className="text-gray-600">Gift Card Amount</span>
-								<span className="font-semibold">€{selectedCard.amount}</span>
-							</div>
-							{cardType === 'physical' && (
-								<div className="flex items-center justify-between mb-2">
-									<span className="text-gray-600">Shipping</span>
-									<span className="font-semibold">€5</span>
+						{/* Modal Body */}
+						<div className="p-8">
+							<div className="space-y-4 mb-6">
+								<div>
+									<label className="block text-sm font-medium text-gray-300 mb-2">
+										Gift Card Code (8-12 digits) *
+									</label>
+									<input
+										type="text"
+										required
+										maxLength="12"
+										value={redeemCode}
+										onChange={(e) => setRedeemCode(e.target.value)}
+										className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent text-center text-xl tracking-wider font-mono"
+										placeholder="XXXX-XXXX-XXXX"
+									/>
 								</div>
-							)}
-							<div className="border-t border-gray-200 pt-2 mt-2">
-								<div className="flex items-center justify-between">
-									<span className="font-bold text-gray-900">Total</span>
-									<span className="font-bold text-xl text-gray-900">
-										€{cardType === 'physical' ? selectedCard.amount + 5 : selectedCard.amount}
-									</span>
-								</div>
-							</div>
-						</div>
 
-						{/* Action Buttons */}
-						<div className="flex gap-3">
-							<button
-								onClick={handleCloseModal}
-								className="flex-1 px-6 py-3 border-2 border-gray-300 text-gray-700 rounded-lg font-semibold hover:bg-gray-50 transition-colors"
-							>
-								Cancel
-							</button>
-							<button
-								onClick={handlePurchase}
-								disabled={loading}
-								className={`flex-1 px-6 py-3 bg-yellow-400 text-gray-900 rounded-lg font-semibold hover:bg-yellow-500 transition-colors ${
-									loading ? 'opacity-50 cursor-not-allowed' : ''
-								}`}
-							>
-								{loading ? 'Processing...' : 'Purchase'}
-							</button>
+								<div className="grid grid-cols-2 gap-4">
+									<div>
+										<label className="block text-sm font-medium text-gray-300 mb-2">
+											Your Name *
+										</label>
+										<input
+											type="text"
+											required
+											value={redeemName}
+											onChange={(e) => setRedeemName(e.target.value)}
+											className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+											placeholder="John Doe"
+										/>
+									</div>
+									<div>
+										<label className="block text-sm font-medium text-gray-300 mb-2">
+											Your Email *
+										</label>
+										<input
+											type="email"
+											required
+											value={redeemEmail}
+											onChange={(e) => setRedeemEmail(e.target.value)}
+											className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+											placeholder="you@example.com"
+										/>
+									</div>
+								</div>
+
+								<div>
+									<label className="block text-sm font-medium text-gray-300 mb-2">
+										Barber Name *
+									</label>
+									<input
+										type="text"
+										required
+										value={redeemBarber}
+										onChange={(e) => setRedeemBarber(e.target.value)}
+										className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+										placeholder="Select your preferred barber"
+									/>
+								</div>
+
+								<div>
+									<label className="block text-sm font-medium text-gray-300 mb-2">
+										Salon Location *
+									</label>
+									<input
+										type="text"
+										required
+										value={redeemLocation}
+										onChange={(e) => setRedeemLocation(e.target.value)}
+										className="w-full px-4 py-3 bg-gray-800 border border-gray-700 rounded-xl text-white focus:ring-2 focus:ring-[#d4af37] focus:border-transparent"
+										placeholder="Downtown, Uptown, etc."
+									/>
+								</div>
+							</div>
+
+							{/* Info Box */}
+							<div className="bg-[#d4af37]/10 border border-[#d4af37]/30 rounded-xl p-4 mb-6">
+								<div className="flex items-start gap-3">
+									<Check className="w-5 h-5 text-[#d4af37] mt-0.5 flex-shrink-0" />
+									<div className="text-sm text-gray-300">
+										<p className="font-semibold text-white mb-1">Valid for 12 months</p>
+										<p>Can be redeemed at any De Legends location</p>
+									</div>
+								</div>
+							</div>
+
+							{/* Action Buttons */}
+							<div className="flex gap-3">
+								<button
+									onClick={handleCloseRedeemModal}
+									className="flex-1 px-6 py-3 border-2 border-gray-700 text-gray-300 rounded-xl font-semibold hover:bg-gray-800 transition-all"
+								>
+									Cancel
+								</button>
+								<button
+									onClick={handleRedeem}
+									disabled={loading}
+									className={`flex-1 px-6 py-3 bg-gradient-to-r from-[#d4af37] to-[#f4d03f] text-black rounded-xl font-semibold hover:shadow-lg transition-all ${
+										loading ? 'opacity-50 cursor-not-allowed' : ''
+									}`}
+								>
+									{loading ? 'Validating...' : 'Validate & Redeem'}
+								</button>
+							</div>
 						</div>
 					</div>
 				</div>
