@@ -434,19 +434,35 @@ const GuestBooking = () => {
               {/* Fixed Bottom Cart */}
               {getServiceCount() > 0 && (
                 <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-50 py-5 px-6">
-                  <div className="max-w-5xl mx-auto flex items-center justify-between">
-                    <div>
-                      <p className="text-sm text-gray-700 font-medium mb-1">{getServiceCount()} service{getServiceCount() > 1 ? 's' : ''}</p>
-                      <p className="text-2xl font-bold text-gray-900">£{getTotalPrice()}</p>
-                      <p className="text-xs text-gray-600 mt-1">You can add more or continue</p>
+                  <div className="max-w-5xl mx-auto">
+                    <div className="flex items-start justify-between gap-6">
+                      <div className="flex-1">
+                        <p className="text-sm text-gray-700 font-medium mb-3">Our visit ({getServiceCount()} service{getServiceCount() > 1 ? 's' : ''})</p>
+                        <div className="space-y-2 mb-3">
+                          {cartServices.map((service) => (
+                            <div key={service._id} className="flex items-start justify-between gap-2 text-sm">
+                              <span className="text-gray-900">{service.name}</span>
+                              <span className="text-gray-900 font-semibold">£{service.price}</span>
+                            </div>
+                          ))}
+                        </div>
+                        <p className="text-xs text-gray-600">You can add more or continue</p>
+                      </div>
+                      
+                      <div className="flex items-center gap-6">
+                        <div className="text-right">
+                          <p className="text-sm text-gray-600 mb-1">Total</p>
+                          <p className="text-2xl font-bold text-gray-900">£{getTotalPrice()}</p>
+                        </div>
+                        
+                        <button
+                          onClick={handleNextStep}
+                          className="bg-red-500 text-white px-12 py-4 rounded-md hover:bg-red-600 transition font-semibold text-base shadow-md"
+                        >
+                          Choose Time
+                        </button>
+                      </div>
                     </div>
-                    
-                    <button
-                      onClick={handleNextStep}
-                      className="bg-red-500 text-white px-12 py-4 rounded-md hover:bg-red-600 transition font-semibold text-base shadow-md"
-                    >
-                      Choose Time
-                    </button>
                   </div>
                 </div>
               )}
