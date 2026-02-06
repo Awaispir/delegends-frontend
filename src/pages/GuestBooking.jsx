@@ -88,15 +88,11 @@ const GuestBooking = () => {
       const location = JSON.parse(storedLocation);
       setSelectedLocation(location);
       updateBookingDetails({ location });
-    } else {
-      // No location selected - redirect to location selection
-      navigate('/select-location');
-      return;
     }
 
     fetchServices();
     fetchBarbers();
-  }, [navigate, updateBookingDetails]);
+  }, [updateBookingDetails]);
 
   const fetchServices = async () => {
     try {
