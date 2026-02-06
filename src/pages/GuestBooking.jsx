@@ -299,9 +299,9 @@ const GuestBooking = () => {
         <div className="max-w-6xl mx-auto">
           {/* Step 1: Service Selection */}
           {currentStep === 1 && (
-            <div className="max-w-5xl mx-auto px-4">
+            <div className="max-w-5xl mx-auto px-4 pb-32">
               {/* Matching your search section */}
-              <div className="mb-10">
+              <div className="mb-12">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Matching your search</h2>
                 
                 {services.length === 0 ? (
@@ -310,41 +310,43 @@ const GuestBooking = () => {
                     <p className="text-sm text-gray-600">Please add services through the admin panel first.</p>
                   </div>
                 ) : (
-                  <div className="space-y-0 bg-white">
+                  <div className="space-y-0">
                     {services.map((service) => (
                       <div 
                         key={service._id} 
-                        className="py-6 px-0 border-b border-gray-200 last:border-b-0 flex items-start justify-between gap-6"
+                        className="py-6 border-b border-gray-200 last:border-b-0"
                       >
-                        <div className="flex-1">
-                          <h3 className="text-base font-semibold text-gray-900 mb-1">{service.name}</h3>
-                          <div className="flex items-center gap-2 text-sm text-gray-600">
-                            <span>{service.duration} mins</span>
-                            {service.description && (
-                              <>
-                                <span>•</span>
-                                <button className="text-purple-600 hover:underline">Show Details</button>
-                              </>
-                            )}
-                          </div>
-                        </div>
-                        
-                        <div className="flex items-center gap-4">
-                          <div className="text-right">
-                            <div className="text-base font-bold text-gray-900">from £{service.price}</div>
+                        <div className="flex items-start justify-between gap-6">
+                          <div className="flex-1 min-w-0">
+                            <h3 className="text-base font-semibold text-gray-900 mb-2">{service.name}</h3>
+                            <div className="flex items-center gap-2 text-sm text-gray-600">
+                              <span>{service.duration} mins</span>
+                              {service.description && (
+                                <>
+                                  <span className="mx-1">•</span>
+                                  <button className="text-purple-600 hover:underline">Show Details</button>
+                                </>
+                              )}
+                            </div>
                           </div>
                           
-                          <button
-                            onClick={() => handleAddService(service)}
-                            disabled={cartServices.some(s => s._id === service._id)}
-                            className={`px-6 py-2.5 rounded-md font-semibold text-sm transition ${
-                              cartServices.some(s => s._id === service._id)
-                                ? 'bg-gray-200 text-gray-600 cursor-not-allowed'
-                                : 'bg-purple-600 text-white hover:bg-purple-700'
-                            }`}
-                          >
-                            {cartServices.some(s => s._id === service._id) ? 'Selected' : 'Select'}
-                          </button>
+                          <div className="flex items-center gap-4 flex-shrink-0">
+                            <div className="text-right">
+                              <div className="text-base font-bold text-gray-900">from £{service.price}</div>
+                            </div>
+                            
+                            <button
+                              onClick={() => handleAddService(service)}
+                              disabled={cartServices.some(s => s._id === service._id)}
+                              className={`px-7 py-2.5 rounded-md font-semibold text-sm transition ${
+                                cartServices.some(s => s._id === service._id)
+                                  ? 'bg-gray-200 text-gray-600 cursor-not-allowed'
+                                  : 'bg-purple-600 text-white hover:bg-purple-700'
+                              }`}
+                            >
+                              {cartServices.some(s => s._id === service._id) ? 'Selected' : 'Select'}
+                            </button>
+                          </div>
                         </div>
                       </div>
                     ))}
@@ -353,43 +355,43 @@ const GuestBooking = () => {
               </div>
 
               {/* Browse services section */}
-              <div className="mb-10">
-                <p className="text-sm text-gray-600 mb-2">Not what you were looking for?</p>
-                <h3 className="text-2xl font-bold text-gray-900 mb-4">Browse services</h3>
+              <div className="mb-12">
+                <p className="text-sm text-gray-700 mb-2">Not what you were looking for?</p>
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">Browse services</h3>
                 
-                <div className="space-y-2 bg-white">
-                  <button className="w-full text-left px-0 py-3 border-b border-gray-200 hover:bg-gray-50 transition">
+                <div className="space-y-0">
+                  <button className="w-full text-left py-4 border-b border-gray-200 hover:bg-gray-50 transition">
                     <span className="font-medium text-gray-900">Ladies' - Haircuts & Hairdressing</span>
-                    <span className="text-gray-500 ml-2">(5)</span>
+                    <span className="text-gray-600 ml-2">(5)</span>
                   </button>
-                  <button className="w-full text-left px-0 py-3 border-b border-gray-200 hover:bg-gray-50 transition">
+                  <button className="w-full text-left py-4 border-b border-gray-200 hover:bg-gray-50 transition">
                     <span className="font-medium text-gray-900">Ladies' - Hair Treatments</span>
-                    <span className="text-gray-500 ml-2">(2)</span>
+                    <span className="text-gray-600 ml-2">(2)</span>
                   </button>
-                  <button className="w-full text-left px-0 py-3 border-b border-gray-200 hover:bg-gray-50 transition">
+                  <button className="w-full text-left py-4 border-b border-gray-200 hover:bg-gray-50 transition">
                     <span className="font-medium text-gray-900">Ladies' - Hair Colouring</span>
-                    <span className="text-gray-500 ml-2">(5)</span>
+                    <span className="text-gray-600 ml-2">(5)</span>
                   </button>
-                  <button className="w-full text-left px-0 py-3 hover:bg-gray-50 transition">
+                  <button className="w-full text-left py-4 hover:bg-gray-50 transition">
                     <span className="font-medium text-gray-900">Ladies - Highlights & Balayage</span>
-                    <span className="text-gray-500 ml-2">(20)</span>
+                    <span className="text-gray-600 ml-2">(20)</span>
                   </button>
                 </div>
               </div>
 
               {/* Fixed Bottom Cart */}
               {getServiceCount() > 0 && (
-                <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-50 py-4 px-6">
+                <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-50 py-5 px-6">
                   <div className="max-w-5xl mx-auto flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600 mb-0.5">{getServiceCount()} service{getServiceCount() > 1 ? 's' : ''}</p>
-                      <p className="text-2xl font-bold text-gray-900 mb-0.5">£{getTotalPrice()}</p>
-                      <p className="text-xs text-gray-500">You can add more or continue</p>
+                      <p className="text-sm text-gray-700 font-medium mb-1">{getServiceCount()} service{getServiceCount() > 1 ? 's' : ''}</p>
+                      <p className="text-2xl font-bold text-gray-900">£{getTotalPrice()}</p>
+                      <p className="text-xs text-gray-600 mt-1">You can add more or continue</p>
                     </div>
                     
                     <button
                       onClick={handleNextStep}
-                      className="bg-purple-600 text-white px-10 py-3.5 rounded-md hover:bg-purple-700 transition font-semibold text-base"
+                      className="bg-purple-600 text-white px-12 py-4 rounded-md hover:bg-purple-700 transition font-semibold text-base shadow-md"
                     >
                       Choose Time
                     </button>
