@@ -35,9 +35,8 @@ const Bookings = () => {
       const location = JSON.parse(storedLocation);
       setSelectedLocation(location);
       setFormData(prev => ({ ...prev, location }));
-      // Redirect to guest booking page with Treatwell-style interface
-      navigate('/guest-booking');
-      return;
+      // Auto-show booking form when coming from location selection
+      setShowForm(true);
     }
     
     fetchBookings();
