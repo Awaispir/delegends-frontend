@@ -49,10 +49,26 @@ function App() {
                 <Route path="/auth/register" element={<Register />} />
                 
                 {/* Guest Booking - NO AUTH REQUIRED */}
-                <Route path="/guest-booking" element={<GuestBooking />} />
+                <Route path="/guest-booking" element={
+                  <div className="flex flex-col min-h-screen">
+                    <Header />
+                    <main className="flex-1">
+                      <GuestBooking />
+                    </main>
+                    <Footer />
+                  </div>
+                } />
                 
                 {/* Location Selection - NO AUTH REQUIRED */}
-                <Route path="/select-location" element={<LocationSelect />} />
+                <Route path="/select-location" element={
+                  <div className="flex flex-col min-h-screen">
+                    <Header />
+                    <main className="flex-1">
+                      <LocationSelect />
+                    </main>
+                    <Footer />
+                  </div>
+                } />
           
           <Route path="/*" element={
             <div className="flex flex-col min-h-screen">
