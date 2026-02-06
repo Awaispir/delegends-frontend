@@ -2,7 +2,6 @@ import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { servicesAPI, barbersAPI } from '../utils/api';
 import { useBookingCart } from '../context/BookingCartContext';
-import { useLanguage } from '../context/LanguageContext';
 import { 
   ShoppingCart, 
   Trash2, 
@@ -37,7 +36,6 @@ const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY);
  */
 const GuestBooking = () => {
   const navigate = useNavigate();
-  const { t } = useLanguage();
   const {
     cartServices,
     addService,
@@ -301,96 +299,108 @@ const GuestBooking = () => {
         <div className="max-w-6xl mx-auto">
           {/* Step 1: Service Selection */}
           {currentStep === 1 && (
-            <div className="grid lg:grid-cols-3 gap-6">
-              {/* Services List */}
-              <div className="lg:col-span-2">
-                <h2 className="text-2xl font-bold mb-6">Available Services</h2>
-                
-                {services.length === 0 ? (
-                  <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-8 text-center">
-                    <p className="text-gray-700 mb-2">No services available in the database yet.</p>
-                    <p className="text-sm text-gray-600">Please add services through the admin panel first.</p>
+            <div className="grid lg:grid-cols-4 gap-6">
+              {/* Services List - Main Area */}
+              <div className="lg:col-span-3">
+                <div className="bg-white rounded-lg shadow">
+                  <div className="border-b px-6 py-4">
+                    <h2 className="text-2xl font-bold">Available Services</h2>
+                    <p className="text-sm text-gray-600 mt-1">Select the services you'd like to book</p>
                   </div>
-                ) : (
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {services.map((service) => (
-                    <div key={service._id} className="bg-white rounded-lg shadow p-6 hover:shadow-lg transition">
-                      <h3 className="text-xl font-bold text-gray-900 mb-2">{service.name}</h3>
-                      <p className="text-gray-600 text-sm mb-4">{service.description}</p>
-                      <div className="flex items-center justify-between mb-4">
-                        <div className="flex items-center gap-2 text-yellow-600 font-bold">
-                          <DollarSign className="w-5 h-5" />
-                          <span>€{service.price}</span>
-                        </div>
-                        <div className="flex items-center gap-2 text-gray-600">
-                          <Clock className="w-5 h-5" />
-                          <span>{service.duration} min</span>
-                        </div>
+                  
+                  {services.length === 0 ? (
+                    <div className="p-8">
+                      <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-8 text-center">
+                        <p className="text-gray-700 mb-2">No services available in the database yet.</p>
+                        <p className="text-sm text-gray-600">Please add services through the admin panel first.</p>
                       </div>
-                      <button
-                        onClick={() => handleAddService(service)}
-                        disabled={cartServices.some(s => s._id === service._id)}
-                        className={`w-full py-2 px-4 rounded-lg font-semibold transition flex items-center justify-center gap-2 ${
-                          cartServices.some(s => s._id === service._id)
-                            ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                            : 'bg-yellow-400 text-gray-900 hover:bg-yellow-500'
-                        }`}
-                      >
-                        {cartServices.some(s => s._id === service._id) ? (
-                          t('bookings.addedToCart')
-                        ) : (
-                          <>
-                            <Plus className="w-5 h-5" />
-                            {t('products.addToCart')}
-                          </>
-                        )}
-                      </button>
                     </div>
-                  ))}
-                  </div>
-                )}
+                  ) : (
+                    <div className="divide-y">
+                      {services.map((service) => (
+                        <div key={service._id} className="p-6 hover:bg-gray-50 transition">
+                          <div className="flex items-start justify-between gap-4">
+                            <div className="flex-1">
+                              <h3 className="text-lg font-bold text-gray-900 mb-2">{service.name}</h3>
+                              {service.description && (
+                                <p className="text-gray-600 text-sm mb-3">{service.description}</p>
+                              )}
+                              <div className="flex items-center gap-4 text-sm">
+                                <div className="flex items-center gap-1 text-gray-600">
+                                  <Clock className="w-4 h-4" />
+                                  <span>{service.duration} mins</span>
+                                </div>
+                                <div className="flex items-center gap-1 text-yellow-600 font-bold">
+                                  <DollarSign className="w-4 h-4" />
+                                  <span>€{service.price}</span>
+                                </div>
+                              </div>
+                            </div>
+                            <button
+                              onClick={() => handleAddService(service)}
+                              disabled={cartServices.some(s => s._id === service._id)}
+                              className={`px-6 py-2 rounded-lg font-semibold transition flex items-center gap-2 whitespace-nowrap ${
+                                cartServices.some(s => s._id === service._id)
+                                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
+                                  : 'bg-yellow-400 text-gray-900 hover:bg-yellow-500'
+                              }`}
+                            >
+                              {cartServices.some(s => s._id === service._id) ? (
+                                'Added'
+                              ) : (
+                                'Select'
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
 
-              {/* Cart Summary */}
+              {/* Cart Summary - Sidebar */}
               <div className="lg:col-span-1">
                 <div className="bg-white rounded-lg shadow p-6 sticky top-4">
                   <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
                     <ShoppingCart className="w-6 h-6" />
-                    Your Cart ({getServiceCount()})
+                    Cart ({getServiceCount()})
                   </h3>
                   
                   {getServiceCount() === 0 ? (
-                    <p className="text-gray-500 text-center py-8">No services selected</p>
+                    <p className="text-gray-500 text-center py-8 text-sm">No services selected</p>
                   ) : (
                     <>
-                      <div className="space-y-3 mb-4">
+                      <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
                         {cartServices.map((service) => (
-                          <div key={service._id} className="flex items-start justify-between border-b pb-3">
-                            <div className="flex-1">
-                              <h4 className="font-semibold text-gray-900">{service.name}</h4>
-                              <div className="flex items-center gap-3 mt-1 text-sm text-gray-600">
-                                <span>€{service.price}</span>
-                                <span>•</span>
-                                <span>{service.duration} min</span>
+                          <div key={service._id} className="border-b pb-3">
+                            <div className="flex items-start justify-between gap-2">
+                              <div className="flex-1 min-w-0">
+                                <h4 className="font-semibold text-gray-900 text-sm truncate">{service.name}</h4>
+                                <div className="flex items-center gap-2 mt-1 text-xs text-gray-600">
+                                  <span>€{service.price}</span>
+                                  <span>•</span>
+                                  <span>{service.duration}m</span>
+                                </div>
                               </div>
+                              <button
+                                onClick={() => removeService(service._id)}
+                                className="text-red-500 hover:text-red-700 p-1 flex-shrink-0"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
                             </div>
-                            <button
-                              onClick={() => removeService(service._id)}
-                              className="text-red-500 hover:text-red-700 p-1"
-                            >
-                              <Trash2 className="w-5 h-5" />
-                            </button>
                           </div>
                         ))}
                       </div>
                       
                       <div className="border-t pt-4 space-y-2">
                         <div className="flex justify-between text-sm">
-                          <span>Total Duration:</span>
-                          <span className="font-semibold">{getTotalDuration()} minutes</span>
+                          <span>Duration:</span>
+                          <span className="font-semibold">{getTotalDuration()} min</span>
                         </div>
                         <div className="flex justify-between text-lg font-bold">
-                          <span>Total Price:</span>
+                          <span>Total:</span>
                           <span className="text-yellow-600">€{getTotalPrice()}</span>
                         </div>
                       </div>
