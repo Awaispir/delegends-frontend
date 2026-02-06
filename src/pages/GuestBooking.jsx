@@ -56,6 +56,7 @@ const GuestBooking = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedLocation, setSelectedLocation] = useState(null);
   const [selectedCategory, setSelectedCategory] = useState('Special Services');
+  const [selectedServiceDetails, setSelectedServiceDetails] = useState(null);
   
   // Customer info
   const [customerInfo, setCustomerInfo] = useState({
@@ -345,7 +346,12 @@ const GuestBooking = () => {
                                   {service.description && (
                                     <>
                                       <span className="mx-1">•</span>
-                                      <button className="text-purple-600 hover:underline">Show Details</button>
+                                      <button 
+                                        onClick={() => setSelectedServiceDetails(service)}
+                                        className="text-yellow-600 hover:text-yellow-700 hover:underline font-medium"
+                                      >
+                                        Show Details
+                                      </button>
                                     </>
                                   )}
                                 </div>
@@ -420,7 +426,12 @@ const GuestBooking = () => {
                                       {service.description && (
                                         <>
                                           <span className="mx-1">•</span>
-                                          <button className="text-purple-600 hover:underline">Show Details</button>
+                                          <button 
+                                            onClick={() => setSelectedServiceDetails(service)}
+                                            className="text-yellow-600 hover:text-yellow-700 hover:underline font-medium"
+                                          >
+                                            Show Details
+                                          </button>
                                         </>
                                       )}
                                     </div>
@@ -604,6 +615,102 @@ const GuestBooking = () => {
                 ) : (
                   <p className="text-gray-600">No reviews yet.</p>
                 )}
+              </div>
+            </div>
+          )}
+
+          {/* Service Details Modal */}
+          {selectedServiceDetails && (
+            <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+              <div className="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                <div className="p-6">
+                  <div className="flex justify-between items-start mb-6">
+                    <h2 className="text-2xl font-bold text-gray-900">{selectedServiceDetails.name}</h2>
+                    <button
+                      onClick={() => setSelectedServiceDetails(null)}
+                      className="text-gray-400 hover:text-gray-600"
+                    >
+                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                      </svg>
+                    </button>
+                  </div>
+
+                  <div className="space-y-6">
+                    {/* Service Info */}
+                    <div className="flex items-center gap-4 pb-6 border-b border-gray-200">
+                      <div className="flex items-center gap-2 text-gray-600">
+                        <Clock className="w-5 h-5" />
+                        <span>{selectedServiceDetails.duration} mins</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-gray-900 font-bold">
+                        <span>from £{selectedServiceDetails.price}</span>
+                      </div>
+                    </div>
+
+                    {/* Description */}
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-3">Description</h3>
+                      <p className="text-gray-700 leading-relaxed">{selectedServiceDetails.description}</p>
+                    </div>
+
+                    {/* Service Reviews */}
+                    {reviews.filter(r => r.serviceName === selectedServiceDetails.name).length > 0 && (
+                      <div>
+                        <h3 className="text-lg font-semibold text-gray-900 mb-3">Reviews for this service</h3>
+                        <div className="space-y-4">
+                          {reviews
+                            .filter(r => r.serviceName === selectedServiceDetails.name)
+                            .slice(0, 3)
+                            .map((review) => (
+                              <div key={review._id} className="bg-gray-50 rounded-lg p-4">
+                                <div className="flex gap-1 mb-2">
+                                  {[1, 2, 3, 4, 5].map((star) => (
+                                    <Star
+                                      key={star}
+                                      className={`w-4 h-4 ${
+                                        star <= review.rating
+                                          ? 'fill-yellow-400 text-yellow-400'
+                                          : 'text-gray-300'
+                                      }`}
+                                    />
+                                  ))}
+                                </div>
+                                <p className="text-gray-700 text-sm mb-2">{review.comment}</p>
+                                <p className="text-xs text-gray-500">
+                                  {review.customerName || 'Anonymous'} • {new Date(review.createdAt).toLocaleDateString()}
+                                </p>
+                              </div>
+                            ))}
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Action Buttons */}
+                    <div className="flex gap-3 pt-4">
+                      <button
+                        onClick={() => setSelectedServiceDetails(null)}
+                        className="flex-1 border-2 border-gray-300 text-gray-700 py-3 rounded-md hover:bg-gray-50 transition font-semibold"
+                      >
+                        Close
+                      </button>
+                      <button
+                        onClick={() => {
+                          handleAddService(selectedServiceDetails);
+                          setSelectedServiceDetails(null);
+                        }}
+                        disabled={cartServices.some(s => s._id === selectedServiceDetails._id)}
+                        className={`flex-1 py-3 rounded-md font-semibold transition ${
+                          cartServices.some(s => s._id === selectedServiceDetails._id)
+                            ? 'bg-gray-200 text-gray-600 cursor-not-allowed'
+                            : 'bg-yellow-400 text-gray-900 hover:bg-yellow-500'
+                        }`}
+                      >
+                        {cartServices.some(s => s._id === selectedServiceDetails._id) ? 'Already Selected' : 'Select Service'}
+                      </button>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           )}
