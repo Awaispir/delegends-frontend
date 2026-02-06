@@ -60,7 +60,6 @@ const GuestBooking = () => {
   const [giftCardCode, setGiftCardCode] = useState('');
   const [couponCode, setCouponCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState(0);
-  const [giftCardBalance, setGiftCardBalance] = useState(0);
   const [applyingCode, setApplyingCode] = useState(false);
   
   // Customer info
@@ -261,7 +260,6 @@ const GuestBooking = () => {
       
       if (data.valid && data.balance > 0) {
         const discountAmount = Math.min(data.balance, getTotalPrice());
-        setGiftCardBalance(data.balance);
         setAppliedDiscount(discountAmount);
         alert(`Gift card applied! Balance: £${data.balance}`);
       } else {

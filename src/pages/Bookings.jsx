@@ -13,7 +13,6 @@ const Bookings = () => {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
-  const [selectedLocation, setSelectedLocation] = useState(null);
   const [paymentLoading, setPaymentLoading] = useState(false);
   const [reviewForm, setReviewForm] = useState({});
   const [submittingReview, setSubmittingReview] = useState(null);
@@ -27,6 +26,21 @@ const Bookings = () => {
     notes: '',
     location: null,
   });
+
+  const handlePaymentSuccess = async (bookingId) => {
+    try {
+      await bookingsAPI.updatePaymentStatus(bookingId, { 
+        paymentStatus: 'paid', 
+        isPaid: true 
+      });
+      await fetchBookings();
+      alert('✅ Payment successful! Your appointment is confirmed.');
+      // Clean up URL
+      navigate('/bookings', { replace: true });
+    } catch (error) {
+      console.error('Error updating payment status:', error);
+    }
+  };
 
   useEffect(() => {
     // Check if location was selected - redirect to guest booking page
@@ -50,21 +64,6 @@ const Bookings = () => {
       alert('Payment was cancelled. You can pay later from your bookings.');
     }
   }, [searchParams, navigate]);
-
-  const handlePaymentSuccess = async (bookingId) => {
-    try {
-      await bookingsAPI.updatePaymentStatus(bookingId, { 
-        paymentStatus: 'paid', 
-        isPaid: true 
-      });
-      await fetchBookings();
-      alert('✅ Payment successful! Your appointment is confirmed.');
-      // Clean up URL
-      navigate('/bookings', { replace: true });
-    } catch (error) {
-      console.error('Error updating payment status:', error);
-    }
-  };
 
   const fetchBookings = async () => {
     try {
@@ -152,7 +151,7 @@ const Bookings = () => {
         time: '',
         price: 0,
         notes: '',
-        location: selectedLocation,
+        location: null,
       });
       fetchBookings();
       alert('✅ Appointment booked successfully!');
@@ -274,11 +273,11 @@ const Bookings = () => {
           <div className="bg-white rounded-lg shadow-lg p-8 mb-8">
             <div className="flex justify-between items-center mb-6">
               <h2 className="text-2xl font-bold">Create New Booking</h2>
-              {selectedLocation && (
+              {formData.location && (
                 <div className="flex items-center gap-4">
                   <div className="flex items-center gap-2 text-gray-700">
                     <MapPin className="w-5 h-5 text-yellow-600" />
-                    <span className="font-semibold">{selectedLocation.name}</span>
+                    <span className="font-semibold">{formData.location.name}</span>
                   </div>
                   <button
                     type="button"
