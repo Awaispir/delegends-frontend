@@ -303,9 +303,9 @@ const GuestBooking = () => {
               {/* Services List - Main Area */}
               <div className="lg:col-span-3">
                 <div className="bg-white rounded-lg shadow">
-                  <div className="border-b px-6 py-4">
-                    <h2 className="text-2xl font-bold">Available Services</h2>
-                    <p className="text-sm text-gray-600 mt-1">Select the services you'd like to book</p>
+                  {/* Matching your search header */}
+                  <div className="border-b px-6 py-4 bg-gray-50">
+                    <h2 className="text-xl font-bold text-gray-800">Matching your search</h2>
                   </div>
                   
                   {services.length === 0 ? (
@@ -316,45 +316,52 @@ const GuestBooking = () => {
                       </div>
                     </div>
                   ) : (
-                    <div className="divide-y">
-                      {services.map((service) => (
-                        <div key={service._id} className="p-6 hover:bg-gray-50 transition">
-                          <div className="flex items-start justify-between gap-4">
-                            <div className="flex-1">
-                              <h3 className="text-lg font-bold text-gray-900 mb-2">{service.name}</h3>
-                              {service.description && (
-                                <p className="text-gray-600 text-sm mb-3">{service.description}</p>
-                              )}
-                              <div className="flex items-center gap-4 text-sm">
-                                <div className="flex items-center gap-1 text-gray-600">
-                                  <Clock className="w-4 h-4" />
+                    <>
+                      <div className="divide-y">
+                        {services.map((service) => (
+                          <div key={service._id} className="p-6 hover:bg-gray-50 transition">
+                            <div className="flex items-start justify-between gap-4">
+                              <div className="flex-1">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-1">{service.name}</h3>
+                                <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
                                   <span>{service.duration} mins</span>
-                                </div>
-                                <div className="flex items-center gap-1 text-yellow-600 font-bold">
-                                  <DollarSign className="w-4 h-4" />
-                                  <span>€{service.price}</span>
+                                  {service.description && (
+                                    <>
+                                      <span>•</span>
+                                      <button className="text-blue-600 hover:underline">Show Details</button>
+                                    </>
+                                  )}
                                 </div>
                               </div>
+                              <div className="flex items-center gap-4">
+                                <div className="text-right">
+                                  <div className="text-lg font-bold text-gray-900">€{service.price}</div>
+                                </div>
+                                <button
+                                  onClick={() => handleAddService(service)}
+                                  disabled={cartServices.some(s => s._id === service._id)}
+                                  className={`px-8 py-2.5 rounded-lg font-semibold transition whitespace-nowrap border-2 ${
+                                    cartServices.some(s => s._id === service._id)
+                                      ? 'bg-gray-100 text-gray-500 border-gray-300 cursor-not-allowed'
+                                      : 'bg-white text-red-500 border-red-500 hover:bg-red-500 hover:text-white'
+                                  }`}
+                                >
+                                  {cartServices.some(s => s._id === service._id) ? 'Added' : 'Select'}
+                                </button>
+                              </div>
                             </div>
-                            <button
-                              onClick={() => handleAddService(service)}
-                              disabled={cartServices.some(s => s._id === service._id)}
-                              className={`px-6 py-2 rounded-lg font-semibold transition flex items-center gap-2 whitespace-nowrap ${
-                                cartServices.some(s => s._id === service._id)
-                                  ? 'bg-gray-300 text-gray-600 cursor-not-allowed'
-                                  : 'bg-yellow-400 text-gray-900 hover:bg-yellow-500'
-                              }`}
-                            >
-                              {cartServices.some(s => s._id === service._id) ? (
-                                'Added'
-                              ) : (
-                                'Select'
-                              )}
-                            </button>
                           </div>
-                        </div>
-                      ))}
-                    </div>
+                        ))}
+                      </div>
+                      
+                      {/* Browse services section */}
+                      <div className="border-t px-6 py-6 bg-gray-50">
+                        <p className="text-sm text-gray-700 mb-1">Not what you were looking for?</p>
+                        <button className="text-blue-600 font-semibold hover:underline">
+                          Browse services
+                        </button>
+                      </div>
+                    </>
                   )}
                 </div>
               </div>
