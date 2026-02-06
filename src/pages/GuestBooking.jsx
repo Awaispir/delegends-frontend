@@ -88,11 +88,15 @@ const GuestBooking = () => {
       const location = JSON.parse(storedLocation);
       setSelectedLocation(location);
       updateBookingDetails({ location });
+    } else {
+      // No location selected - redirect to location selection
+      navigate('/select-location');
+      return;
     }
 
     fetchServices();
     fetchBarbers();
-  }, [updateBookingDetails]);
+  }, [navigate, updateBookingDetails]);
 
   const fetchServices = async () => {
     try {
@@ -295,10 +299,10 @@ const GuestBooking = () => {
         <div className="max-w-6xl mx-auto">
           {/* Step 1: Service Selection */}
           {currentStep === 1 && (
-            <div className="max-w-4xl mx-auto">
+            <div className="max-w-5xl mx-auto px-4">
               {/* Matching your search section */}
-              <div className="bg-white rounded-lg p-6 mb-8">
-                <h2 className="text-xl font-bold text-gray-900 mb-6">Matching your search</h2>
+              <div className="mb-10">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Matching your search</h2>
                 
                 {services.length === 0 ? (
                   <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-8 text-center">
@@ -306,15 +310,15 @@ const GuestBooking = () => {
                     <p className="text-sm text-gray-600">Please add services through the admin panel first.</p>
                   </div>
                 ) : (
-                  <div className="space-y-0">
+                  <div className="space-y-0 bg-white">
                     {services.map((service) => (
                       <div 
                         key={service._id} 
-                        className="py-5 border-b border-gray-200 last:border-b-0 flex items-start justify-between gap-4"
+                        className="py-6 px-0 border-b border-gray-200 last:border-b-0 flex items-start justify-between gap-6"
                       >
                         <div className="flex-1">
                           <h3 className="text-base font-semibold text-gray-900 mb-1">{service.name}</h3>
-                          <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                          <div className="flex items-center gap-2 text-sm text-gray-600">
                             <span>{service.duration} mins</span>
                             {service.description && (
                               <>
@@ -325,7 +329,7 @@ const GuestBooking = () => {
                           </div>
                         </div>
                         
-                        <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-4">
                           <div className="text-right">
                             <div className="text-base font-bold text-gray-900">from £{service.price}</div>
                           </div>
@@ -333,7 +337,7 @@ const GuestBooking = () => {
                           <button
                             onClick={() => handleAddService(service)}
                             disabled={cartServices.some(s => s._id === service._id)}
-                            className={`px-5 py-2 rounded-md font-medium text-sm transition ${
+                            className={`px-6 py-2.5 rounded-md font-semibold text-sm transition ${
                               cartServices.some(s => s._id === service._id)
                                 ? 'bg-gray-200 text-gray-600 cursor-not-allowed'
                                 : 'bg-purple-600 text-white hover:bg-purple-700'
@@ -349,39 +353,43 @@ const GuestBooking = () => {
               </div>
 
               {/* Browse services section */}
-              <div className="bg-white rounded-lg p-6 mb-8">
-                <p className="text-sm text-gray-600 mb-1">Not what you were looking for?</p>
-                <h3 className="text-xl font-bold text-gray-900 mb-4">Browse services</h3>
+              <div className="mb-10">
+                <p className="text-sm text-gray-600 mb-2">Not what you were looking for?</p>
+                <h3 className="text-2xl font-bold text-gray-900 mb-4">Browse services</h3>
                 
-                <div className="space-y-2">
-                  <button className="w-full text-left px-4 py-3 border border-gray-200 rounded-md hover:bg-gray-50 transition">
+                <div className="space-y-2 bg-white">
+                  <button className="w-full text-left px-0 py-3 border-b border-gray-200 hover:bg-gray-50 transition">
                     <span className="font-medium text-gray-900">Ladies' - Haircuts & Hairdressing</span>
                     <span className="text-gray-500 ml-2">(5)</span>
                   </button>
-                  <button className="w-full text-left px-4 py-3 border border-gray-200 rounded-md hover:bg-gray-50 transition">
+                  <button className="w-full text-left px-0 py-3 border-b border-gray-200 hover:bg-gray-50 transition">
                     <span className="font-medium text-gray-900">Ladies' - Hair Treatments</span>
                     <span className="text-gray-500 ml-2">(2)</span>
                   </button>
-                  <button className="w-full text-left px-4 py-3 border border-gray-200 rounded-md hover:bg-gray-50 transition">
+                  <button className="w-full text-left px-0 py-3 border-b border-gray-200 hover:bg-gray-50 transition">
                     <span className="font-medium text-gray-900">Ladies' - Hair Colouring</span>
                     <span className="text-gray-500 ml-2">(5)</span>
+                  </button>
+                  <button className="w-full text-left px-0 py-3 hover:bg-gray-50 transition">
+                    <span className="font-medium text-gray-900">Ladies - Highlights & Balayage</span>
+                    <span className="text-gray-500 ml-2">(20)</span>
                   </button>
                 </div>
               </div>
 
               {/* Fixed Bottom Cart */}
               {getServiceCount() > 0 && (
-                <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-300 shadow-lg z-50 p-4">
-                  <div className="max-w-4xl mx-auto flex items-center justify-between">
+                <div className="fixed bottom-0 left-0 right-0 bg-white border-t-2 border-gray-200 shadow-2xl z-50 py-4 px-6">
+                  <div className="max-w-5xl mx-auto flex items-center justify-between">
                     <div>
-                      <p className="text-sm text-gray-600">{getServiceCount()} service{getServiceCount() > 1 ? 's' : ''}</p>
-                      <p className="text-2xl font-bold text-gray-900">£{getTotalPrice()}</p>
-                      <p className="text-xs text-gray-500 mt-1">You can add more or continue</p>
+                      <p className="text-sm text-gray-600 mb-0.5">{getServiceCount()} service{getServiceCount() > 1 ? 's' : ''}</p>
+                      <p className="text-2xl font-bold text-gray-900 mb-0.5">£{getTotalPrice()}</p>
+                      <p className="text-xs text-gray-500">You can add more or continue</p>
                     </div>
                     
                     <button
                       onClick={handleNextStep}
-                      className="bg-purple-600 text-white px-8 py-3 rounded-md hover:bg-purple-700 transition font-semibold text-base"
+                      className="bg-purple-600 text-white px-10 py-3.5 rounded-md hover:bg-purple-700 transition font-semibold text-base"
                     >
                       Choose Time
                     </button>
