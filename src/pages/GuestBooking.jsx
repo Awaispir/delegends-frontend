@@ -499,6 +499,23 @@ const GuestBooking = () => {
                   />
                 </div>
 
+                <div className="flex gap-4">
+                  <button
+                    type="button"
+                    onClick={handlePrevStep}
+                    className="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg hover:bg-gray-300 transition font-semibold"
+                  >
+                    Back
+                  </button>
+                  <button
+                    type="button"
+                    onClick={handleNextStep}
+                    className="flex-1 bg-yellow-400 text-gray-900 py-3 rounded-lg hover:bg-yellow-500 transition font-semibold"
+                  >
+                    Continue
+                  </button>
+                </div>
+
                 <div className="flex gap-4 pt-4">
                   <button
                     onClick={handlePrevStep}
