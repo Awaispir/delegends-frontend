@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { servicesAPI, barbersAPI } from '../utils/api';
+import { servicesAPI, barbersAPI, reviewsAPI } from '../utils/api';
 import { useBookingCart } from '../context/BookingCartContext';
 import { 
   ShoppingCart, 
@@ -12,7 +12,8 @@ import {
   MapPin,
   Calendar,
   User,
-  CreditCard
+  CreditCard,
+  Star
 } from 'lucide-react';
 import axios from 'axios';
 import { loadStripe } from '@stripe/stripe-js';
@@ -50,6 +51,7 @@ const GuestBooking = () => {
 
   const [services, setServices] = useState([]);
   const [barbers, setBarbers] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedLocation, setSelectedLocation] = useState(null);
@@ -97,6 +99,7 @@ const GuestBooking = () => {
 
     fetchServices();
     fetchBarbers();
+    fetchReviews();
   }, [navigate, updateBookingDetails]);
 
   const fetchServices = async () => {
@@ -118,6 +121,16 @@ const GuestBooking = () => {
       setBarbers(response.data || []);
     } catch (error) {
       console.error('Error fetching barbers:', error);
+    }
+  };
+
+  const fetchReviews = async () => {
+    try {
+      const response = await reviewsAPI.getApproved();
+      setReviews(response.data || []);
+    } catch (error) {
+      console.error('Error fetching reviews:', error);
+      setReviews([]);
     }
   };
 
@@ -485,6 +498,111 @@ const GuestBooking = () => {
                       <p className="text-xs text-gray-500 mt-4 text-center">You can add more or continue</p>
                     </div>
                   </div>
+                )}
+              </div>
+
+              {/* Venue Reviews Section */}
+              <div className="max-w-7xl mx-auto px-4 mt-12 pb-12">
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Venue reviews</h2>
+                
+                {reviews.length > 0 ? (
+                  <>
+                    {/* Review Summary */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-6 mb-6">
+                      <div className="flex items-start gap-6">
+                        <div className="text-center">
+                          <div className="text-5xl font-bold text-gray-900 mb-2">
+                            {(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length).toFixed(1)}
+                          </div>
+                          <div className="flex gap-1 mb-2">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                className={`w-5 h-5 ${
+                                  star <= Math.round(reviews.reduce((sum, r) => sum + r.rating, 0) / reviews.length)
+                                    ? 'fill-yellow-400 text-yellow-400'
+                                    : 'text-gray-300'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <p className="text-sm text-gray-600">{reviews.length} reviews</p>
+                        </div>
+                        
+                        <div className="flex-1">
+                          <div className="space-y-2">
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm text-gray-700 w-24">Ambience</span>
+                              <div className="flex gap-1">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                ))}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm text-gray-700 w-24">Staff</span>
+                              <div className="flex gap-1">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                ))}
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                              <span className="text-sm text-gray-700 w-24">Cleanliness</span>
+                              <div className="flex gap-1">
+                                {[1, 2, 3, 4, 5].map((star) => (
+                                  <Star key={star} className="w-4 h-4 fill-yellow-400 text-yellow-400" />
+                                ))}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Verified Reviews Badge */}
+                    <div className="bg-white border border-gray-200 rounded-lg p-4 mb-6 flex items-start gap-3">
+                      <div className="w-6 h-6 rounded-full bg-teal-100 flex items-center justify-center flex-shrink-0">
+                        <svg className="w-4 h-4 text-teal-600" fill="currentColor" viewBox="0 0 20 20">
+                          <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                        </svg>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold text-gray-900">Verified reviews</p>
+                        <p className="text-xs text-gray-600">Written by our customers, so you know what to expect at each and every venue.</p>
+                      </div>
+                    </div>
+
+                    {/* Individual Reviews */}
+                    <div className="space-y-6">
+                      {reviews.slice(0, 3).map((review) => (
+                        <div key={review._id} className="bg-white border border-gray-200 rounded-lg p-6">
+                          <div className="flex gap-1 mb-3">
+                            {[1, 2, 3, 4, 5].map((star) => (
+                              <Star
+                                key={star}
+                                className={`w-5 h-5 ${
+                                  star <= review.rating
+                                    ? 'fill-yellow-400 text-yellow-400'
+                                    : 'text-gray-300'
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          
+                          <p className="text-gray-900 mb-4">{review.comment}</p>
+                          
+                          <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
+                            <span className="font-medium">{review.customerName || 'Anonymous'}</span>
+                            <span>•</span>
+                            <span>{new Date(review.createdAt).toLocaleDateString()}</span>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </>
+                ) : (
+                  <p className="text-gray-600">No reviews yet.</p>
                 )}
               </div>
             </div>
