@@ -228,6 +228,10 @@ const GuestBooking = () => {
     setCurrentStep(currentStep - 1);
   };
 
+  const handleRemoveService = (serviceId) => {
+    removeService(serviceId);
+  };
+
   const changeLocation = () => {
     sessionStorage.removeItem('selectedLocation');
     navigate('/select-location');
@@ -344,8 +348,8 @@ const GuestBooking = () => {
                                   disabled={cartServices.some(s => s._id === service._id)}
                                   className={`px-7 py-2.5 rounded-md font-semibold text-sm transition ${
                                     cartServices.some(s => s._id === service._id)
-                                      ? 'bg-teal-100 text-teal-700 cursor-not-allowed'
-                                      : 'bg-white text-red-500 border-2 border-red-500 hover:bg-red-50'
+                                      ? 'bg-gray-200 text-gray-600 cursor-not-allowed'
+                                      : 'bg-yellow-400 text-gray-900 hover:bg-yellow-500'
                                   }`}
                                 >
                                   {cartServices.some(s => s._id === service._id) ? 'Selected' : 'Select'}
@@ -419,8 +423,8 @@ const GuestBooking = () => {
                                       disabled={cartServices.some(s => s._id === service._id)}
                                       className={`px-7 py-2.5 rounded-md font-semibold text-sm transition ${
                                         cartServices.some(s => s._id === service._id)
-                                          ? 'bg-teal-100 text-teal-700 cursor-not-allowed'
-                                          : 'bg-white text-red-500 border-2 border-red-500 hover:bg-red-50'
+                                          ? 'bg-gray-200 text-gray-600 cursor-not-allowed'
+                                          : 'bg-yellow-400 text-gray-900 hover:bg-yellow-500'
                                       }`}
                                     >
                                       {cartServices.some(s => s._id === service._id) ? 'Selected' : 'Select'}
@@ -444,9 +448,22 @@ const GuestBooking = () => {
                       
                       <div className="space-y-3 mb-6">
                         {cartServices.map((service) => (
-                          <div key={service._id} className="flex items-start justify-between gap-2">
-                            <span className="text-sm text-gray-900">{service.name}</span>
-                            <span className="text-sm text-gray-900 font-semibold">£{service.price}</span>
+                          <div key={service._id} className="flex items-start justify-between gap-3">
+                            <div className="flex-1">
+                              <span className="text-sm text-gray-900 block">{service.name}</span>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              <span className="text-sm text-gray-900 font-semibold">£{service.price}</span>
+                              <button
+                                onClick={() => handleRemoveService(service._id)}
+                                className="text-red-500 hover:text-red-700 transition"
+                                title="Remove service"
+                              >
+                                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                              </button>
+                            </div>
                           </div>
                         ))}
                       </div>
@@ -460,7 +477,7 @@ const GuestBooking = () => {
                       
                       <button
                         onClick={handleNextStep}
-                        className="w-full bg-red-500 text-white px-6 py-3 rounded-md hover:bg-red-600 transition font-semibold text-base shadow-md"
+                        className="w-full bg-yellow-400 text-gray-900 px-6 py-3 rounded-md hover:bg-yellow-500 transition font-semibold text-base shadow-md"
                       >
                         Choose Time
                       </button>
