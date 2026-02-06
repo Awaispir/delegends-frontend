@@ -53,6 +53,7 @@ const GuestBooking = () => {
   const [loading, setLoading] = useState(true);
   const [currentStep, setCurrentStep] = useState(1);
   const [selectedLocation, setSelectedLocation] = useState(null);
+  const [selectedCategory, setSelectedCategory] = useState('Special Services');
   
   // Customer info
   const [customerInfo, setCustomerInfo] = useState({
@@ -300,9 +301,9 @@ const GuestBooking = () => {
           {/* Step 1: Service Selection */}
           {currentStep === 1 && (
             <div className="max-w-5xl mx-auto px-4 pb-32">
-              {/* Matching your search section */}
+              {/* Popular services section */}
               <div className="mb-12">
-                <h2 className="text-2xl font-bold text-gray-900 mb-6">Matching your search</h2>
+                <h2 className="text-2xl font-bold text-gray-900 mb-6">Popular services</h2>
                 
                 {services.length === 0 ? (
                   <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-8 text-center">
@@ -311,7 +312,7 @@ const GuestBooking = () => {
                   </div>
                 ) : (
                   <div className="space-y-0">
-                    {services.map((service) => (
+                    {services.slice(0, 5).map((service) => (
                       <div 
                         key={service._id} 
                         className="py-6 border-b border-gray-200 last:border-b-0"
@@ -340,8 +341,8 @@ const GuestBooking = () => {
                               disabled={cartServices.some(s => s._id === service._id)}
                               className={`px-7 py-2.5 rounded-md font-semibold text-sm transition ${
                                 cartServices.some(s => s._id === service._id)
-                                  ? 'bg-gray-200 text-gray-600 cursor-not-allowed'
-                                  : 'bg-purple-600 text-white hover:bg-purple-700'
+                                  ? 'bg-teal-100 text-teal-700 cursor-not-allowed'
+                                  : 'bg-white text-red-500 border-2 border-red-500 hover:bg-red-50'
                               }`}
                             >
                               {cartServices.some(s => s._id === service._id) ? 'Selected' : 'Select'}
@@ -356,26 +357,77 @@ const GuestBooking = () => {
 
               {/* Browse services section */}
               <div className="mb-12">
-                <p className="text-sm text-gray-700 mb-2">Not what you were looking for?</p>
                 <h3 className="text-2xl font-bold text-gray-900 mb-6">Browse services</h3>
                 
-                <div className="space-y-0">
-                  <button className="w-full text-left py-4 border-b border-gray-200 hover:bg-gray-50 transition">
-                    <span className="font-medium text-gray-900">Ladies' - Haircuts & Hairdressing</span>
-                    <span className="text-gray-600 ml-2">(5)</span>
-                  </button>
-                  <button className="w-full text-left py-4 border-b border-gray-200 hover:bg-gray-50 transition">
-                    <span className="font-medium text-gray-900">Ladies' - Hair Treatments</span>
-                    <span className="text-gray-600 ml-2">(2)</span>
-                  </button>
-                  <button className="w-full text-left py-4 border-b border-gray-200 hover:bg-gray-50 transition">
-                    <span className="font-medium text-gray-900">Ladies' - Hair Colouring</span>
-                    <span className="text-gray-600 ml-2">(5)</span>
-                  </button>
-                  <button className="w-full text-left py-4 hover:bg-gray-50 transition">
-                    <span className="font-medium text-gray-900">Ladies - Highlights & Balayage</span>
-                    <span className="text-gray-600 ml-2">(20)</span>
-                  </button>
+                <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+                  {/* Categories Sidebar */}
+                  <div className="lg:col-span-1 space-y-2">
+                    {['Special Services', 'Body Massage', 'Beard Services', 'Hairdressing'].map((category) => {
+                      const categoryCount = services.filter(s => s.category === category).length;
+                      const isActive = selectedCategory === category;
+                      return (
+                        <button
+                          key={category}
+                          onClick={() => setSelectedCategory(category)}
+                          className={`w-full text-left px-4 py-3 rounded-md transition ${
+                            isActive 
+                              ? 'bg-gray-200 text-gray-900 font-semibold' 
+                              : 'bg-gray-50 text-gray-700 hover:bg-gray-100'
+                          }`}
+                        >
+                          <span>{category}</span>
+                          <span className="text-gray-500 ml-2">({categoryCount})</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Services List */}
+                  <div className="lg:col-span-3">
+                    <div className="space-y-0">
+                      {services
+                        .filter(s => s.category === selectedCategory)
+                        .map((service) => (
+                          <div 
+                            key={service._id} 
+                            className="py-6 border-b border-gray-200 last:border-b-0"
+                          >
+                            <div className="flex items-start justify-between gap-6">
+                              <div className="flex-1 min-w-0">
+                                <h3 className="text-base font-semibold text-gray-900 mb-2">{service.name}</h3>
+                                <div className="flex items-center gap-2 text-sm text-gray-600">
+                                  <span>{service.duration} mins</span>
+                                  {service.description && (
+                                    <>
+                                      <span className="mx-1">•</span>
+                                      <button className="text-purple-600 hover:underline">Show Details</button>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                              
+                              <div className="flex items-center gap-4 flex-shrink-0">
+                                <div className="text-right">
+                                  <div className="text-base font-bold text-gray-900">from £{service.price}</div>
+                                </div>
+                                
+                                <button
+                                  onClick={() => handleAddService(service)}
+                                  disabled={cartServices.some(s => s._id === service._id)}
+                                  className={`px-7 py-2.5 rounded-md font-semibold text-sm transition ${
+                                    cartServices.some(s => s._id === service._id)
+                                      ? 'bg-teal-100 text-teal-700 cursor-not-allowed'
+                                      : 'bg-white text-red-500 border-2 border-red-500 hover:bg-red-50'
+                                  }`}
+                                >
+                                  {cartServices.some(s => s._id === service._id) ? 'Selected' : 'Select'}
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                    </div>
+                  </div>
                 </div>
               </div>
 
@@ -391,7 +443,7 @@ const GuestBooking = () => {
                     
                     <button
                       onClick={handleNextStep}
-                      className="bg-purple-600 text-white px-12 py-4 rounded-md hover:bg-purple-700 transition font-semibold text-base shadow-md"
+                      className="bg-red-500 text-white px-12 py-4 rounded-md hover:bg-red-600 transition font-semibold text-base shadow-md"
                     >
                       Choose Time
                     </button>
