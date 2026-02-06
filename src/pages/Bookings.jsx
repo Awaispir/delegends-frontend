@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { bookingsAPI, barbersAPI, servicesAPI, reviewsAPI } from '../utils/api';
 import { MapPin, ExternalLink, CreditCard, DollarSign, User, Star } from 'lucide-react';
@@ -27,7 +27,7 @@ const Bookings = () => {
     location: null,
   });
 
-  const handlePaymentSuccess = async (bookingId) => {
+  const handlePaymentSuccess = useCallback(async (bookingId) => {
     try {
       await bookingsAPI.updatePaymentStatus(bookingId, { 
         paymentStatus: 'paid', 
@@ -35,12 +35,11 @@ const Bookings = () => {
       });
       await fetchBookings();
       alert('✅ Payment successful! Your appointment is confirmed.');
-      // Clean up URL
       navigate('/bookings', { replace: true });
     } catch (error) {
       console.error('Error updating payment status:', error);
     }
-  };
+  }, [navigate]);
 
   useEffect(() => {
     // Check if location was selected - redirect to guest booking page
