@@ -62,7 +62,7 @@ const Bookings = () => {
     } else if (paymentStatus === 'cancelled') {
       alert('Payment was cancelled. You can pay later from your bookings.');
     }
-  }, [searchParams, navigate]);
+  }, [searchParams, navigate, handlePaymentSuccess]);
 
   const fetchBookings = async () => {
     try {
