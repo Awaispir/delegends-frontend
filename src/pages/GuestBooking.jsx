@@ -300,89 +300,91 @@ const GuestBooking = () => {
           {/* Step 1: Service Selection */}
           {currentStep === 1 && (
             <div className="grid lg:grid-cols-4 gap-6">
-              {/* Services List - Main Area */}
-              <div className="lg:col-span-3 space-y-12">
-                {/* Matching your search section */}
-                <div>
-                  <h2 className="text-xl font-bold text-gray-900 mb-6">Matching your search</h2>
-                  
-                  {services.length === 0 ? (
-                    <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-8 text-center">
-                      <p className="text-gray-700 mb-2">No services available in the database yet.</p>
-                      <p className="text-sm text-gray-600">Please add services through the admin panel first.</p>
-                    </div>
-                  ) : (
-                    <div className="space-y-6">
-                      {services.map((service) => (
-                        <div key={service._id} className="flex items-start justify-between gap-6 pb-6 border-b border-gray-200 last:border-b-0">
-                          <div className="flex-1">
-                            <h3 className="text-base font-semibold text-gray-900 mb-2">{service.name}</h3>
-                            <div className="flex items-center gap-2 text-sm text-gray-600">
-                              <span>{service.duration} mins</span>
-                              {service.description && (
-                                <>
-                                  <span>•</span>
-                                  <button className="text-blue-600 hover:underline">Show Details</button>
-                                </>
-                              )}
-                            </div>
-                          </div>
-                          <div className="flex items-start gap-4 flex-shrink-0">
-                            <div className="text-right">
-                              <div className="text-lg font-bold text-gray-900">€{service.price}</div>
-                            </div>
-                            <button
-                              onClick={() => handleAddService(service)}
-                              disabled={cartServices.some(s => s._id === service._id)}
-                              className={`px-6 py-2 rounded-md font-semibold text-sm transition border-2 ${
-                                cartServices.some(s => s._id === service._id)
-                                  ? 'bg-gray-100 text-gray-500 border-gray-300 cursor-not-allowed'
-                                  : 'bg-white text-red-500 border-red-500 hover:bg-red-50'
-                              }`}
-                            >
-                              {cartServices.some(s => s._id === service._id) ? 'Added' : 'Select'}
-                            </button>
-                          </div>
+              {/* Services Grid - Main Area */}
+              <div className="lg:col-span-3">
+                {services.length === 0 ? (
+                  <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-8 text-center">
+                    <p className="text-gray-700 mb-2">No services available in the database yet.</p>
+                    <p className="text-sm text-gray-600">Please add services through the admin panel first.</p>
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {services.map((service) => (
+                      <div 
+                        key={service._id} 
+                        className="bg-white rounded-2xl shadow-sm hover:shadow-md transition-all duration-200 p-6 border border-gray-100 hover:-translate-y-1"
+                      >
+                        <h3 className="text-lg font-bold text-gray-900 mb-3">{service.name}</h3>
+                        
+                        <div className="inline-flex items-center px-3 py-1.5 rounded-full bg-blue-100 text-blue-700 text-sm font-medium mb-4">
+                          <Clock className="w-4 h-4 mr-1" />
+                          {service.duration} min
                         </div>
-                      ))}
-                    </div>
-                  )}
-                </div>
-
-                {/* Browse services section */}
-                <div>
-                  <p className="text-sm text-gray-700 mb-1">Not what you were looking for?</p>
-                  <h3 className="text-xl font-bold text-gray-900">Browse services</h3>
-                </div>
+                        
+                        <div className="text-3xl font-bold text-green-600 mb-4">
+                          €{service.price}
+                        </div>
+                        
+                        {service.description && (
+                          <p className="text-sm text-gray-600 mb-4 line-clamp-2">{service.description}</p>
+                        )}
+                        
+                        <button
+                          onClick={() => handleAddService(service)}
+                          disabled={cartServices.some(s => s._id === service._id)}
+                          className={`w-full py-3 rounded-lg font-semibold transition-all ${
+                            cartServices.some(s => s._id === service._id)
+                              ? 'bg-green-100 text-green-700 cursor-not-allowed'
+                              : 'bg-blue-600 text-white hover:bg-blue-700 active:scale-95'
+                          }`}
+                        >
+                          {cartServices.some(s => s._id === service._id) ? (
+                            <span className="flex items-center justify-center gap-2">
+                              <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                              </svg>
+                              Added to booking
+                            </span>
+                          ) : (
+                            'Select'
+                          )}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Cart Summary - Sidebar */}
               <div className="lg:col-span-1">
-                <div className="bg-white rounded-lg shadow-lg border border-gray-200 p-6 sticky top-4">
+                <div className="bg-white rounded-xl shadow-lg border border-gray-200 p-6 sticky top-4">
                   <h3 className="text-xl font-bold mb-4 flex items-center gap-2">
-                    <ShoppingCart className="w-6 h-6" />
-                    Cart ({getServiceCount()})
+                    <ShoppingCart className="w-6 h-6 text-blue-600" />
+                    <span>Cart ({getServiceCount()})</span>
                   </h3>
                   
                   {getServiceCount() === 0 ? (
-                    <p className="text-gray-500 text-center py-8 text-sm">No services selected</p>
+                    <div className="text-center py-12">
+                      <ShoppingCart className="w-16 h-16 text-gray-300 mx-auto mb-3" />
+                      <p className="text-gray-500 text-sm">No services selected</p>
+                    </div>
                   ) : (
                     <>
-                      <div className="space-y-3 mb-4 max-h-64 overflow-y-auto">
+                      <div className="space-y-3 mb-6 max-h-80 overflow-y-auto">
                         {cartServices.map((service) => (
-                          <div key={service._id} className="border-b pb-3">
+                          <div key={service._id} className="bg-gray-50 rounded-lg p-3 border border-gray-200">
                             <div className="flex items-start justify-between gap-2">
                               <div className="flex-1 min-w-0">
-                                <h4 className="font-semibold text-gray-900 text-sm truncate">{service.name}</h4>
-                                <div className="flex items-center gap-2 mt-1 text-xs text-gray-600">
-                                  <span>€{service.price}</span>
+                                <h4 className="font-semibold text-gray-900 text-sm mb-1">{service.name}</h4>
+                                <div className="flex items-center gap-3 text-xs text-gray-600">
+                                  <span className="font-bold text-green-600">€{service.price}</span>
                                   <span>•</span>
                                   <span>{service.duration}m</span>
                                 </div>
                               </div>
                               <button
                                 onClick={() => removeService(service._id)}
-                                className="text-red-500 hover:text-red-700 p-1 flex-shrink-0"
+                                className="text-red-500 hover:text-red-700 hover:bg-red-50 p-1.5 rounded-lg transition flex-shrink-0"
                               >
                                 <Trash2 className="w-4 h-4" />
                               </button>
@@ -391,22 +393,22 @@ const GuestBooking = () => {
                         ))}
                       </div>
                       
-                      <div className="border-t pt-4 space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span>Duration:</span>
-                          <span className="font-semibold">{getTotalDuration()} min</span>
+                      <div className="border-t border-gray-200 pt-4 space-y-3">
+                        <div className="flex justify-between text-sm text-gray-600">
+                          <span>Total Duration:</span>
+                          <span className="font-semibold text-gray-900">{getTotalDuration()} min</span>
                         </div>
-                        <div className="flex justify-between text-lg font-bold">
-                          <span>Total:</span>
-                          <span className="text-yellow-600">€{getTotalPrice()}</span>
+                        <div className="flex justify-between items-center">
+                          <span className="text-lg font-bold text-gray-900">Total:</span>
+                          <span className="text-2xl font-bold text-green-600">€{getTotalPrice()}</span>
                         </div>
                       </div>
                       
                       <button
                         onClick={handleNextStep}
-                        className="w-full mt-6 bg-yellow-400 text-gray-900 py-3 rounded-lg hover:bg-yellow-500 transition font-semibold"
+                        className="w-full mt-6 bg-blue-600 text-white py-3.5 rounded-lg hover:bg-blue-700 active:scale-95 transition-all font-semibold shadow-md"
                       >
-                        Continue
+                        Continue to Booking
                       </button>
                     </>
                   )}
