@@ -60,6 +60,8 @@ const GuestBooking = () => {
   const [giftCardCode, setGiftCardCode] = useState('');
   const [couponCode, setCouponCode] = useState('');
   const [appliedDiscount, setAppliedDiscount] = useState(0);
+  const [giftCardBalance, setGiftCardBalance] = useState(0);
+  const [applyingCode, setApplyingCode] = useState(false);
   
   // Customer info
   const [customerInfo, setCustomerInfo] = useState({
@@ -247,6 +249,46 @@ const GuestBooking = () => {
 
   const handleRemoveService = (serviceId) => {
     removeService(serviceId);
+  };
+
+  const handleApplyGiftCard = async () => {
+    if (!giftCardCode.trim()) return;
+    
+    setApplyingCode(true);
+    try {
+      const response = await axios.get(`${API_URL}/gift-cards/validate/${giftCardCode}`);
+      const data = response.data;
+      
+      if (data.valid && data.balance > 0) {
+        const discountAmount = Math.min(data.balance, getTotalPrice());
+        setGiftCardBalance(data.balance);
+        setAppliedDiscount(discountAmount);
+        alert(`Gift card applied! Balance: £${data.balance}`);
+      } else {
+        alert(data.message || 'Invalid gift card');
+      }
+    } catch (error) {
+      console.error('Gift card validation error:', error);
+      alert('Failed to validate gift card');
+    } finally {
+      setApplyingCode(false);
+    }
+  };
+
+  const handleApplyCoupon = async () => {
+    if (!couponCode.trim()) return;
+    
+    setApplyingCode(true);
+    try {
+      // Placeholder for coupon validation
+      // const response = await axios.get(`${API_URL}/coupons/validate/${couponCode}`);
+      alert('Coupon validation coming soon');
+    } catch (error) {
+      console.error('Coupon validation error:', error);
+      alert('Failed to validate coupon');
+    } finally {
+      setApplyingCode(false);
+    }
   };
 
   const changeLocation = () => {
@@ -526,14 +568,11 @@ const GuestBooking = () => {
                                 className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
                               />
                               <button
-                                onClick={() => {
-                                  if (giftCardCode.trim()) {
-                                    alert('Gift card validation coming soon');
-                                  }
-                                }}
-                                className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition"
+                                onClick={handleApplyGiftCard}
+                                disabled={applyingCode}
+                                className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition disabled:opacity-50"
                               >
-                                Apply
+                                {applyingCode ? 'Checking...' : 'Apply'}
                               </button>
                             </div>
                           </div>
@@ -549,14 +588,11 @@ const GuestBooking = () => {
                                 className="flex-1 border border-gray-300 rounded-md px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-yellow-400"
                               />
                               <button
-                                onClick={() => {
-                                  if (couponCode.trim()) {
-                                    alert('Coupon validation coming soon');
-                                  }
-                                }}
-                                className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition"
+                                onClick={handleApplyCoupon}
+                                disabled={applyingCode}
+                                className="px-4 py-2 bg-gray-900 text-white rounded-md text-sm font-medium hover:bg-gray-800 transition disabled:opacity-50"
                               >
-                                Apply
+                                {applyingCode ? 'Checking...' : 'Apply'}
                               </button>
                             </div>
                           </div>

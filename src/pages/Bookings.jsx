@@ -29,14 +29,11 @@ const Bookings = () => {
   });
 
   useEffect(() => {
-    // Check if location was selected
+    // Check if location was selected - redirect to guest booking page
     const storedLocation = sessionStorage.getItem('selectedLocation');
     if (storedLocation) {
-      const location = JSON.parse(storedLocation);
-      setSelectedLocation(location);
-      setFormData(prev => ({ ...prev, location }));
-      // Auto-show booking form when coming from location selection
-      setShowForm(true);
+      navigate('/guest-booking');
+      return;
     }
     
     fetchBookings();
@@ -52,7 +49,7 @@ const Bookings = () => {
     } else if (paymentStatus === 'cancelled') {
       alert('Payment was cancelled. You can pay later from your bookings.');
     }
-  }, [searchParams]);
+  }, [searchParams, navigate]);
 
   const handlePaymentSuccess = async (bookingId) => {
     try {
