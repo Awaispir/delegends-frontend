@@ -301,10 +301,10 @@ const GuestBooking = () => {
           {currentStep === 1 && (
             <div className="grid lg:grid-cols-4 gap-6">
               {/* Services List - Main Area */}
-              <div className="lg:col-span-3 space-y-8">
+              <div className="lg:col-span-3 space-y-12">
                 {/* Matching your search section */}
                 <div>
-                  <h2 className="text-2xl font-bold text-gray-900 mb-4">Matching your search</h2>
+                  <h2 className="text-xl font-bold text-gray-900 mb-6">Matching your search</h2>
                   
                   {services.length === 0 ? (
                     <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-8 text-center">
@@ -312,16 +312,11 @@ const GuestBooking = () => {
                       <p className="text-sm text-gray-600">Please add services through the admin panel first.</p>
                     </div>
                   ) : (
-                    <div className="bg-white rounded-lg border border-gray-200">
-                      {services.map((service, index) => (
-                        <div 
-                          key={service._id} 
-                          className={`p-6 flex items-center justify-between hover:bg-gray-50 transition ${
-                            index !== services.length - 1 ? 'border-b border-gray-200' : ''
-                          }`}
-                        >
+                    <div className="space-y-6">
+                      {services.map((service) => (
+                        <div key={service._id} className="flex items-start justify-between gap-6 pb-6 border-b border-gray-200 last:border-b-0">
                           <div className="flex-1">
-                            <h3 className="text-lg font-semibold text-gray-900 mb-2">{service.name}</h3>
+                            <h3 className="text-base font-semibold text-gray-900 mb-2">{service.name}</h3>
                             <div className="flex items-center gap-2 text-sm text-gray-600">
                               <span>{service.duration} mins</span>
                               {service.description && (
@@ -332,17 +327,17 @@ const GuestBooking = () => {
                               )}
                             </div>
                           </div>
-                          <div className="flex items-center gap-6">
+                          <div className="flex items-start gap-4 flex-shrink-0">
                             <div className="text-right">
-                              <div className="text-xl font-bold text-gray-900">€{service.price}</div>
+                              <div className="text-lg font-bold text-gray-900">€{service.price}</div>
                             </div>
                             <button
                               onClick={() => handleAddService(service)}
                               disabled={cartServices.some(s => s._id === service._id)}
-                              className={`px-8 py-2.5 rounded-md font-semibold transition border-2 ${
+                              className={`px-6 py-2 rounded-md font-semibold text-sm transition border-2 ${
                                 cartServices.some(s => s._id === service._id)
                                   ? 'bg-gray-100 text-gray-500 border-gray-300 cursor-not-allowed'
-                                  : 'bg-white text-red-500 border-red-500 hover:bg-red-500 hover:text-white'
+                                  : 'bg-white text-red-500 border-red-500 hover:bg-red-50'
                               }`}
                             >
                               {cartServices.some(s => s._id === service._id) ? 'Added' : 'Select'}
@@ -357,7 +352,7 @@ const GuestBooking = () => {
                 {/* Browse services section */}
                 <div>
                   <p className="text-sm text-gray-700 mb-1">Not what you were looking for?</p>
-                  <h3 className="text-2xl font-bold text-gray-900">Browse services</h3>
+                  <h3 className="text-xl font-bold text-gray-900">Browse services</h3>
                 </div>
               </div>
 
